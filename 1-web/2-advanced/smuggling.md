@@ -9,11 +9,11 @@ Today's web applications frequently employ chains of HTTP servers between users 
 
 When the front-end server forwards HTTP requests to a back-end server, it typically sends several requests over the same back-end network connection, because this is much more efficient and performant. The protocol is very simple: HTTP requests are sent one after another, and the receiving server parses the HTTP request headers to determine where one request ends and the next one begins:
 
-![State of the art server-side communication](https://portswigger.net/web-security/images/forwarding-http-requests-to-back-end-server.svg)
+![State of the art server-side communication](/smuggling-forwarding-http-requests-to-back-end-server.svg)
 
 In this situation, it is crucial that the front-end and back-end systems agree about the boundaries between requests. Otherwise, an attacker might be able to send an ambiguous request that gets interpreted differently by the front-end and back-end systems:
 
-![Request smuggling attack](https://portswigger.net/web-security/images/smuggling-http-request-to-back-end-server.svg)
+![Request smuggling attack](smuggling-http-request-to-back-end-server.svg)
 
 Here, the attacker causes part of their front-end request to be interpreted by the back-end server as the start of the next request. It is effectively prepended to the next request, and so can interfere with the way the application processes that request. This is a request smuggling attack, and it can have devastating results.
 
