@@ -13,7 +13,7 @@ When the front-end server forwards HTTP requests to a back-end server, it typica
 
 In this situation, it is crucial that the front-end and back-end systems agree about the boundaries between requests. Otherwise, an attacker might be able to send an ambiguous request that gets interpreted differently by the front-end and back-end systems:
 
-![Request smuggling attack](smuggling-http-request-to-back-end-server.svg)
+![Request smuggling attack](/smuggling-http-request-to-back-end-server.svg)
 
 Here, the attacker causes part of their front-end request to be interpreted by the back-end server as the start of the next request. It is effectively prepended to the next request, and so can interfere with the way the application processes that request. This is a request smuggling attack, and it can have devastating results.
 
