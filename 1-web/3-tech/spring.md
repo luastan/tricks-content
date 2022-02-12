@@ -7,7 +7,7 @@ description: Spring Boot related vulnerability learning materials, collection of
 
 ## Routing Knowledge
 
-- The root path of the default built-in routing in Spring Boot **1.x** version /starts, and in **2.x**, it `/actuator` starts with.
+- The root path of the default built-in routing in Spring Boot **1.x** starts `/`, and in **2.x**, it starts with `/actuator`.
 - Some programmers will customize `/manage`, `/management` or the project-related name is the root path
 - The default built-in route name, such as `/env`. Sometimes it will be modified by the programmer, such as modified to `/appenv`
 
