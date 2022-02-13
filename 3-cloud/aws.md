@@ -65,7 +65,7 @@ run download_ec2_userdata
 # Configure AWS CLI
 aws configure
 # Configure AWS CLI with profile
-aws configure --profile "{{ profile luastan }}"
+aws configure --profile "{{ profile snooze }}"
 
 # Get the user to whom the token corresponds
 aws --profile flaws sts get-caller-identity
@@ -128,9 +128,9 @@ aws s3 sync s3://level3-9afd3927f195e10225021a578e6f78df.flaws.cloud/ . --no-sig
 aws s3 --profile flaws ls s3://level2-c8b217a33fcf1f839f6f1f73a00a9ae7.flaws.cloud
 
 # Authenticated but unrestricted snapshots
-aws --profile "{{ profile luastan }}" ec2 describe-snapshots --filter "Name=volume-id,Values=vol-04f1c039bc13ea950" --region us-west-2
+aws --profile "{{ profile snooze }}" ec2 describe-snapshots --filter "Name=volume-id,Values=vol-04f1c039bc13ea950" --region us-west-2
 # SNAPSHOTS               False   975426262029    100%    snap-0b49342abd1bdcb89  2017-02-28T01:35:12.000Z        completed       vol-04f1c039bc13ea950   8
-aws --profile "{{ profile luastan }}" ec2 create-volume --availability-zone us-west-2a --region us-west-2  --snapshot-id  snap-0b49342abd1bdcb89
+aws --profile "{{ profile snooze }}" ec2 create-volume --availability-zone us-west-2a --region us-west-2  --snapshot-id  snap-0b49342abd1bdcb89
 # Create a EC instance in the same zone (Make sure to choose free tiers)
 # While creating the EC2 instance attach the previously created volume from the snapshot
 ssh ec2-user@ec2-52-43-103-64.us-west-2.compute.amazonaws.com -i flaws.pem
@@ -1045,14 +1045,14 @@ start=timeit.default_timer()
 
 # Check if a previously saved progress (cursor value) is present
 try:
-	s = open('{{ tmp-dir /tmp/lst }}/seek', 'r')
+	s = open('{{ tmp-dir /tmp/snz }}/seek', 'r')
 	index = int(s.readline().strip())
 except:
 	index = 0
 
 
 # Iterating through wordlist
-with open('{{ tmp-dir /tmp/lst }}/wordlist','r') as f:
+with open('{{ tmp-dir /tmp/snz }}/wordlist','r') as f:
 	# Seeking to last save point or at the start
 	f.seek(index)
 	line = f.readline()
@@ -1064,7 +1064,7 @@ with open('{{ tmp-dir /tmp/lst }}/wordlist','r') as f:
 		if (int(timeit.default_timer()-start)) >= 5:
 			
 			# Writing cursor value to a file and breaking the loop
-			o = open("{{ tmp-dir /tmp/lst }}/seek", 'w')
+			o = open("{{ tmp-dir /tmp/snz }}/seek", 'w')
 			o.write(seek)
 			o.close()
 			break
