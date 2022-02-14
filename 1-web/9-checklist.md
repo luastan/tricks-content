@@ -1,11 +1,10 @@
 ---
-title: Cheatsheet
+title: Checklist
 badge: Web
+description: A simple checklist to remember the tests you should make on a web assessment
 ---
 
-Hello this is a test
-
-
+This is a test for chacklist persistance on the browser localStorage
 
 * [ ] Session handling
 * [ ] Test tokens for meaning

