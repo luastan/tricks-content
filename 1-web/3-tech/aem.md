@@ -54,7 +54,26 @@ With this in mind, the idea is clear, try to find super juicy hidden gems behind
 
 
 
+## Tooling
 
+### aem-hacker
+
+Great tool by Mikhail Egorov ([@0ang3el](https://twitter.com/0ang3el)) you can find in his repository at [github.com/0ang3el/aem-hacker](https://github.com/0ang3el/aem-hacker). If the target has some kind of Waf or the typicall CDN abuse protection (Cloudflare, Akamai...), a fork of the tool that adds delay between requests as a parameter can be found at [https://github.com/luastan/aem-hacker](github.com/luastan/aem-hacker).
+
+Usage is simple, but you will need a VPS or port forwarding of some kind for it to detect SSRFs:
+
+```shell
+python3 aem_hacker.py -u "{{ target-url https://aem.webapp }}" --host "{{ vps-ip 127.0.0.1 }}" --port "{{ vps-port 30001 }}"
+```
+
+
+If you want to use the delay between requests version, the command would be the following:
+
+```shell
+python3 aem_hacker.py -u "{{ target-url https://aem.webapp }}" --delay "{{ request-delay 2 }}" --workers "{{ workers 1 }}" --host "{{ vps-ip 127.0.0.1 }}" --port "{{ vps-port 30001 }}"
+```
+
+Take in mind that the delayed version is just a quick solution, it only delays requests within the same worker, which means that if you have 3 workers running and a delay of 2, you will end up sending 3 requests every 2 seconds.
 
 
 ## Fingerprinting
