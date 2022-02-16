@@ -1,6 +1,6 @@
 ---
 title: Trickz
-position: 0
+position: 1
 badge: By @luastan
 description: Some Tips and tricks!
 ---

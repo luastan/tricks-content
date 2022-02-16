@@ -1,6 +1,6 @@
 ---
 title: Cloud Pentesting
-position: 3
+position: 4
 badge: Google / AWS / Azure
 ---
 
