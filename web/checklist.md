@@ -1,6 +1,7 @@
 ---
 title: Checklist
 badge: Web
+position: 9
 description: A simple checklist to remember the tests you should make on a web assessment
 ---
 

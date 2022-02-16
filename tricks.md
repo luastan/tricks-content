@@ -1,5 +1,6 @@
 ---
 title: Trickz
+position: 0
 badge: By @luastan
 description: Some Tips and tricks!
 ---
@@ -23,9 +24,9 @@ This is just a documentation test, using Nuxt Content. It is generated from vani
 ## Global variables
 One of the main features I wanted to build is the possibility of defining global variables. ¿What are those? Go on some of the pages that have content on them and try changing the `collaborator` and `target-domain` variables:
 
- - [OAuth 2.0](/1-web/2-advanced/oauth)
- - [XXE injection](/1-web/1-server-side/xxe#exploitation)
- - [Google API keys](/3-cloud/google/api-keys)
+ - [OAuth 2.0](/web/advanced/oauth)
+ - [XXE injection](/web/server-side/xxe#exploitation)
+ - [Google API keys](/cloud/google/api-keys)
 
 The variables are updated across the whole documentation and saved on your browser's localStorage. 
 

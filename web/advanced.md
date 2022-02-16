@@ -1,7 +1,6 @@
 ---
 title: Advanced topics
-
-
+position: 3
 ---
 
-Some advanced stuff
+Advanced stuff
