@@ -1,6 +1,6 @@
 ---
 title: SQL injection
-
+badge: Web
 ---
 
 

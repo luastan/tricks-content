@@ -1,7 +1,7 @@
 ---
 title: Web Pentesting
 position: 2
-badge: Whatts
+badge: Web
 ---
 
-Web assessment
+Web pentesting stuff
