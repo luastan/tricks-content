@@ -5,10 +5,6 @@ badge: By @luastan
 description: Some Tips and tricks!
 ---
 
-This is just a documentation test, using Nuxt Content. It is generated from vanilla markdown and has support for vue components.
-
-
-
 <tricks-animated-logo></tricks-animated-logo>
 
 
@@ -32,14 +28,14 @@ This results very useful when trying a subset of payloads or snippets against a 
 It is usefull to edit the content of tricks with docker as you can see changes in realtime. First pull the image from the repo:
 
 ```bash
-docker pull "{{ image gcr.io/luastans-tricks/ssr-tricks }}"
+docker pull "{{ image gcr.io/luastans-trickz/ssr-tricks }}"
 ```
 
 Then you can mount any folder with markdown on it. The following command uses the `mounting-point` directory as a markdown source and also forwards the port `lport` on your host to the container:
 
 
 ```bash
-docker run -v "{{ mounting-point /home/luastan/projects/tricks-content }}:/app/content" -p "{{ lport 8080 }}:8080" --user root --entrypoint /usr/local/bin/yarn -it  "{{ image gcr.io/luastans-tricks/ssr-tricks }}" dev
+docker run -v "{{ mounting-point /home/luastan/projects/tricks-content }}:/app/content" -p "{{ lport 8080 }}:8080" --user root --entrypoint /usr/local/bin/yarn -it  "{{ image gcr.io/luastans-trickz/ssr-tricks }}" dev
 ```
 
 Keep in mind that if you are using windows, you have to mount a wsl directory to launch the container. Otherwise hot reloading wont work. 
