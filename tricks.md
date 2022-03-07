@@ -35,7 +35,7 @@ Then you can mount any folder with markdown on it. The following command uses th
 
 
 ```bash
-docker run -v "{{ mounting-point /home/luastan/projects/tricks-content }}:/app/content" -p "{{ lport 8080 }}:8080" --user root --entrypoint /usr/local/bin/yarn -it  "{{ image gcr.io/luastans-trickz/ssr-tricks }}" dev
+docker run -v "{{ mounting-point /home/luastan/projects/tricks-content }}:/app/content" -p "{{ lport 8080 }}:8080" --user root --entrypoint /usr/local/bin/yarn -it "{{ image gcr.io/luastans-trickz/ssr-tricks }}" dev
 ```
 
 Keep in mind that if you are using windows, you have to mount a wsl directory to launch the container. Otherwise hot reloading wont work. 
