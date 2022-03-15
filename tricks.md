@@ -5,7 +5,7 @@ badge: By @luastan
 description: Some Tips and tricks!
 ---
 
-<tricks-animated-logo></tricks-animated-logo>
+<tricks-animated-logo-glitch></tricks-animated-logo-glitch>
 
 
 
