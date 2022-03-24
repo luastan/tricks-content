@@ -64,6 +64,8 @@ The <i>smart-variable</i> component can be used anywhere to display smart variab
 <span class="font-semibold">&lt;smart-variable variable="variable-name"&gt;default value&lt;/smart-variable&gt;</span> 
 
 Put <span class="font-semibold">&lt;smart-variable variable="var-name"&gt;default&lt;/smart-variable&gt;</span> anywhere.
+
+Try &lt;code&gt;&lt;smart-variable variable="var"&gt;Value to copy&lt;/smart-variable&gt;&lt;/code&gt; to show an inline copy smart variable. 
 </code></pre>
 
 
