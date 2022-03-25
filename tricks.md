@@ -7,10 +7,7 @@ description: Some Tips and tricks!
 
 <tricks-animated-logo-glitch></tricks-animated-logo-glitch>
 
-
-
 ## Adding content
-
 
 ### Live editing
 
@@ -31,28 +28,25 @@ Then you can mount any folder with markdown on it. The following command uses th
 
 
 ```bash
-docker run -v "{{ mounting-point /home/$USER/projects/tricks-content }}:/app/content" -p "{{ lport 8080 }}:8080" --user root --entrypoint /usr/local/bin/yarn -it "{{ image gcr.io/luastans-trickz/ssr-tricks }}" dev
+docker run --rm -v "{{ mounting-point /home/$USER/projects/tricks-content }}:/app/content" -p "{{ lport 8080 }}:8080" --user root --entrypoint /usr/local/bin/yarn -it "{{ image gcr.io/luastans-trickz/ssr-tricks }}" dev
 ```
 
 This will expose the web app at <code>localhost:<smart-variable variable="lport">8080</smart-variable></code> generated from markdown files located at <code><smart-variable variable="mounting-point">/home/$USER/projects/tricks-content</smart-variable></code>. Keep in mind that if you are using windows, you have to mount a wsl directory to launch the container. Otherwise hot reloading wont work. 
 
 My recomendation is to clone the content to any directory you want in your WSL home and use the [Remote - WSL](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-wsl) extension for Visual Studio Code or directly acces with your `explorer.exe` the `\\wsl$` route where you can find the filesystem for all your distros.
 
-
 ### Usage
 
-
 #### General usage
-Trickz uses Nuxt Content under the hood so you can follow the [nuxt/content documentation](https://content.nuxtjs.org/writing) on how to use every markdown feature the tech has.
 
+Trickz uses Nuxt Content under the hood so you can follow the [nuxt/content documentation](https://content.nuxtjs.org/writing) on how to use every markdown feature the tech has.
 
 #### Code snippets & Smart variables
 
-
 <pre class="language-md fancy-scrollbar"><code class="language-md">## Code snippet examples
 
- * Language and filename are optional
- * You can add smart variables to code using curly braces:
+* Language and filename are optional
+* You can add smart variables to code using curly braces:
 
 ```language[filename]
 <span class="text-gray-500 italic">curl --header "Authorization: key=<span class="font-semibold">{{ variable-name defaultValue }}</span>" \
@@ -61,18 +55,17 @@ Trickz uses Nuxt Content under the hood so you can follow the [nuxt/content docu
 ```
 The <i>smart-variable</i> component can be used anywhere to display smart variable values:
 
-<span class="font-semibold">&lt;smart-variable variable="variable-name"&gt;default value&lt;/smart-variable&gt;</span> 
+<span class="font-semibold">&lt;smart-variable variable="variable-name"&gt;default value&lt;/smart-variable&gt;</span>
 
 Put <span class="font-semibold">&lt;smart-variable variable="var-name"&gt;default&lt;/smart-variable&gt;</span> anywhere.
 
-Try &lt;code&gt;&lt;smart-variable variable="var"&gt;Value to copy&lt;/smart-variable&gt;&lt;/code&gt; to show an inline copy smart variable. 
+Try &lt;code&gt;&lt;smart-variable variable="var"&gt;Value to copy&lt;/smart-variable&gt;&lt;/code&gt; to show an inline copy smart variable.
 </code></pre>
 
 
 #### HTML & CSS
 
-You can freely add HTML tags to markdown files, and even use Vue components. 
-
+You can freely add HTML tags to markdown files, and even use Vue components.
 
 #### Images
 Place the images on the same path your markdown file is using a unique filename. The image will be available at `/filename`. Take the following code as an example:
@@ -80,5 +73,3 @@ Place the images on the same path your markdown file is using a unique filename.
 ```markdown
 ![{{ image-caption Image Caption }}](/{{ image-filename sample.png }})
 ```
-
-

