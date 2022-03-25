@@ -1,14 +1,14 @@
 ---
-title: SSL/TLS configuration
+title: SSL / TLS configuration
 badge: Web
-description: Analyse the server SSL/TLS strength in terms of algorithms and configuration
+description: Analyse the server SSL / TLS strength in terms of algorithms and configuration
 ---
 
 This is usually pretty straight forward. There are some pretty good tools that will do all the job for you. My personal favourite is [testssl.sh](#testssl.sh)
 
-## testssl.sh
+## Testssl.sh
 
-Very popular and nice tool. It is also very esasy to use with docker which is pretty cool.
+Very popular and nice tool. It is also very esasy to use with docker which is pretty cool. You can find more info on the [testssl.sh repo](https://github.com/drwetter/testssl.sh). The default branch with the latest stable changes currently is (_for some reason_) the <code><smart-variable variable="testssl-branch">3.1dev</smart-variable></code>.
 
 ### Installation
 
@@ -18,7 +18,7 @@ The tool only needs `OpenSSL` or `LibreSSL`, as well as `/bin/bash` with the sta
 <template v-slot:docker>
 
 ```bash
-docker build -t {{ image-name testssl }} "https://github.com/drwetter/testssl.sh.git#3.1dev"
+docker build -t {{ image-name testssl }} "https://github.com/drwetter/testssl.sh.git#{{ testssl-branch 3.1dev }}"
 ```
 
 </template>
@@ -36,7 +36,6 @@ git clone --depth 1 "https://github.com/drwetter/testssl.sh.git" {{ testssl-dir 
 ### Usage
 
 The usage is really easy. It just takes the target domain as an argument:
-
 
 <smart-tabs variable="tool-docker-vs-cli" :tabs="{'docker': 'Docker', 'cli': 'Command Line'}">
 <template v-slot:docker>
