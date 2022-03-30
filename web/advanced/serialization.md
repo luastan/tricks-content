@@ -165,7 +165,6 @@ You will likely want to test a bunch of gadget chains with Burp's intruder or a 
 
 > TODO: Finish implementing the script
 
-
 ### Using custom gadget chains
 
 If you got access to some source code, you might want to develop your own gadget chain. The following snippet can be used as an example of how to serialize and deserialize objects in Java:
