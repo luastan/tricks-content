@@ -5,6 +5,10 @@ description: This is the environment I use for pentesting/development. It's a ba
 
 ## Windows Set-Up
 
+### PowerToys
+
+[PowerToys](https://docs.microsoft.com/en-us/windows/powertoys/) is an amazing set of utilities that greatly boost productivity on windows. Grab the installer from their [GitHub releases](https://aka.ms/installpowertoys).
+
 ### Windows Terminal
 
 You can install it from the [Microsoft Store](https://www.microsoft.com/store/productId/9N0DX20HK701). I use it for accessing my WSL distros, Powershell and SSH connections.
