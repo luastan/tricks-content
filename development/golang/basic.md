@@ -2,11 +2,13 @@
 title: Basic Usage
 description: Golang basic usage for scripting
 badge: Go
+position: 1
 ---
 
-
 ## Boilerplate code
+
 Sample Go code to make a request through a Socks5 or http proxy
+
 ```go
 package main
 
