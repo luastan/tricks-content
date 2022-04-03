@@ -19,6 +19,27 @@ The following table might help you while preparing the cert:
 | Media | 2 - Data link | Frame | Ethernet | Reliable transmission of data frames between two nodes connected by a physical layer |
 | Media | 1 - Physical | Bit, Symbol | No protocols just bits | Transmission and reception of raw bit streams over a physical medium |
 
+## Cyber kill chain
+
+A cyber kill chain reveals the phases of a cyberattack: from early reconnaissance to the goal of data exfiltration. The kill chain can also be used as a management tool to help continuously improve network defense. According to Lockheed Martin, **threats** must progress through several phases in the model, including:
+
+1. **Reconnaissance**: Intruder selects target, researches it, and attempts to identify vulnerabilities in the target network.
+2. **Weaponization**: Intruder creates remote access malware weapon, such as a virus or worm, tailored to one or more vulnerabilities.
+3. **Delivery**: Intruder transmits weapon to target (e.g., via e-mail attachments, websites or USB drives)
+4. **Exploitation**: Malware weapon's program code triggers, which takes action on target network to exploit vulnerability.
+5. **Installation**: Malware weapon installs access point (e.g., "backdoor") usable by intruder.
+6. **Command and Control**: Malware enables intruder to have "hands on the keyboard" persistent access to target network.
+7. **Actions on Objective**: Intruder takes action to achieve their goals, such as [data exfiltration](https://en.wikipedia.org/wiki/Data_exfiltration "Data exfiltration"), [data destruction](https://en.wikipedia.org/wiki/Data_destruction "Data destruction"), or encryption for [ransom](https://en.wikipedia.org/wiki/Ransomware "Ransomware").
+
+**Defensive** courses of action can be taken against these phases:
+
+1. **Detect**: Determine whether an intruder is present.
+2. **Deny**: Prevent information disclosure and unauthorized access.
+3. **Disrupt**: Stop or change outbound traffic (to attacker).
+4. **Degrade**: Counter-attack command and control.
+5. **Deceive**: Interfere with command and control.
+6. **Contain**: Network segmentation changes
+
 ## Random concepts
 
 ### AV, SLE, ARO, ALE and EF
