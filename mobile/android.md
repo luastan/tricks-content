@@ -1,14 +1,23 @@
 ---
 title: Android pentesting
 description: Android general recomendations
+position: 1
 ---
 
 
-## Prepare your environment
+## Prepare your PC
 
+### Required tools for your PC
 
+- `adb`
+- `apktool`
+- `frida`
+- `objection`
 
-### Required tools
+## Prepare your Android phone
 
- - `adb`
- - `apktool`
+### Root the device
+
+### Using Magisk
+
+### Frida Server

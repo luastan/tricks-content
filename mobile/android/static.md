@@ -2,47 +2,10 @@
 title: Static Analysis
 badge: Android
 description: Basic static analysis for android applications
+position: 2
 ---
 
 Let's say you want to analyse the <smart-variable variable="app-package">com.luastan.app</smart-variable> application. The following is a guide in order to provide some guildeness onto how to get started with Android applications static analysis. The required environment is described at the [Android page](/mobile/android#required-tools).
-
-## Getting Started
-
-First of all verify that you have your Android phone plugged into the computer with debugging mode enabled. You can do so with the following command, checking if your device appears on the list:
-
-```bash
-adb devices
-```
-
-The first step is to locate the application file. We find it executing a shell command on the phone (If you don't know exactly the package name try the command with a string the app might have):
-
-```bash
-adb shell "pm list packages -f | grep {{ app-package com.luastan.app }} | sed 's/.*:\(.*apk\)=.*/\1/'"
-```
-
-Once you located the apk you can pull it (transfer it from your phone to your computer) with `adb pull`. You can use the _no-need-to-paste_ one-liner or specify the location
-
-
-<smart-tabs variable="adb-pull-fancy" :tabs="{'fancy': 'Fancy one liner', 'not-fancy': 'Paste the location'}">
-<template v-slot:fancy>
-
-```bash
-adb pull $(adb shell "pm list packages -f | grep {{ app-package com.luastan.app }} | sed 's/.*:\(.*apk\)=.*/\1/'" | tr -d '\r\n') "{{ app-package com.luastan.app }}.apk"
-```
-
-</template>
-<template v-slot:not-fancy>
-
-```bash
-adb pull "{{ app-location /data/app/.../base.apk }}" "{{ app-package com.luastan.app }}.apk"
-```
-
-</template>
-</smart-tabs>
-
-
-Both commands will pull the apk into <code><smart-variable variable="app-package">com.luastan.app</smart-variable>.apk</code> on your local machine.
-
 
 ## Unpackaging the APK
 
@@ -77,10 +40,6 @@ Or even directly test the API keys to check if any is vulnerable to some kind of
 keytest check "{{ app-package com.luastan.app }}" -o "{{ app-package com.luastan.app }}.apikeys.md"
 ```
 
-
-
 ## Decompiling into Java source
-
-
 
 ## Mobile Security Framework (MobSF)
