@@ -12,38 +12,9 @@ First of all verify that you have your Android phone plugged into the computer w
 adb devices
 ```
 
-### Installing from application store
+### Installing the app
 
-The first step is to locate the application file. We find it executing a shell command on the phone (If you don't know exactly the package name try the command with a string the app might have):
-
-```bash
-adb shell "pm list packages -f | grep {{ app-package com.luastan.app }} | sed 's/.*:\(.*apk\)=.*/\1/'"
-```
-
-Once you located the apk you can pull it (transfer it from your phone to your computer) with `adb pull`. You can use the _no-need-to-paste_ one-liner or specify the location:
-
-<smart-tabs variable="adb-pull-fancy" :tabs="{'fancy': 'Fancy one liner', 'not-fancy': 'Paste the location'}">
-<template v-slot:fancy>
-
-```bash
-adb pull $(adb shell "pm list packages -f | grep {{ app-package com.luastan.app }} | sed 's/.*:\(.*apk\)=.*/\1/'" | tr -d '\r\n') "{{ app-package com.luastan.app }}.apk"
-```
-
-</template>
-<template v-slot:not-fancy>
-
-```bash
-adb pull "{{ app-location /data/app/.../base.apk }}" "{{ app-package com.luastan.app }}.apk"
-```
-
-</template>
-</smart-tabs>
-
-Both commands will pull the apk into <code><smart-variable variable="app-package">com.luastan.app</smart-variable>.apk</code> on your local machine.
-
-### Installing from APK file
-
-When performing an assessment is possible that you were given the APK file from an alternative channel. You can install it on your phone with `adb install`:
+Install it from your desired source. It is possible that you were given the APK file from an alternative channel. You can install it from your PC with `adb install`:
 
 ```bash
 adb install "{{ app-package com.luastan.app }}.apk

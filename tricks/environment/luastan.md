@@ -341,7 +341,7 @@ sudo apt install golang
 After that, to use the tols/commands/programs you should add the following to your `$PATH`:
 
 ```bash
-$(go env GOPATH)/bin
+export PATH=$(go env GOPATH)/bin:$PATH
 ```
 
 ### Cloud CLIs
