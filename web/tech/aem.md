@@ -27,7 +27,7 @@ This is due to an impropper configuration of the **Dispatcher**, wich is a very 
 
 ### AEM Common Deploy Models
 
-![AEM Basic and Standard Deployment Model](/aem_deploy_model_basic.jpg)
+![AEM Basic and Standard Deployment Model](aem_deploy_model_basic.jpg)
 
 ### Apache Sling & Apache JackRabbit
 
