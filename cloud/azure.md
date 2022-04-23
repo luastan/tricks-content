@@ -151,6 +151,7 @@ Logout:
 az logout
 ```
 
+Documentation: [https://docs.microsoft.com/en-us/cli/azure/](https://docs.microsoft.com/en-us/cli/azure/)
 
 ## Powershell modules
 
@@ -166,6 +167,8 @@ Installation:
 Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force
 ```
 
+Documentation: [https://docs.microsoft.com/en-us/powershell/azure/?view=azps-7.4.0](https://docs.microsoft.com/en-us/powershell/azure/?view=azps-7.4.0)
+
 ### AzureAD ([PowerShell Gallery](https://www.powershellgallery.com/packages/AzureAD/2.0.2.140))
 
 This is the  Azure Active Directory PowerShell for Graph. This module requires Windows >= 7 except in the preview branch:
@@ -178,6 +181,8 @@ Install-Module -Name AzureAD -Scope CurrentUser -Repository PSGallery -Force
 # Install-Module -Name AzureADPreview -Scope CurrentUser -Repository PSGallery -Force
 ```
 
+Documentation: [https://docs.microsoft.com/en-us/powershell/module/azuread/?view=azureadps-2.0](https://docs.microsoft.com/en-us/powershell/module/azuread/?view=azureadps-2.0)
+
 ### MSOnline ([PowerShell Gallery](https://www.powershellgallery.com/packages/MSOnline/1.1.183.66))
 
 This is the older MSOnline V1 PowerShell module for Azure Active Directory. Customers are encouraged to use the newer Azure Active Directory V2 PowerShell module instead of this module
@@ -188,11 +193,15 @@ Installation:
 Install-Module -Name MSOnline -Scope CurrentUser -Repository PSGallery -Force
 ```
 
+Documentation: [https://docs.microsoft.com/en-us/powershell/module/msonline/?view=azureadps-1.0](https://docs.microsoft.com/en-us/powershell/module/msonline/?view=azureadps-1.0)
+
 ### MicroBurst ([GitHub](https://github.com/NetSPI/MicroBurst))
 
 ### AADInternals ([GitHub](https://github.com/Gerenios/AADInternals))
 
-### MSOLSpray ([MSOLSpray](https://github.com/dafthack/MSOLSpray))
+### MSOLSpray ([GitHub](https://github.com/dafthack/MSOLSpray))
+
+### Roadrecon ([GitHub](https://github.com/dirkjanm/ROADtools))
 
 ## Restful-apis
 

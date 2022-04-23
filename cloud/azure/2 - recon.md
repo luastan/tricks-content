@@ -1,7 +1,7 @@
 ---
-title: Recon
+title: Recon and Initial Access
 description: The first step to Global Administrator
-position: 1
+position: 2
 ---
 
 # Check if AzureAD is in use

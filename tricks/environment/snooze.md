@@ -22,8 +22,29 @@ scoop install git curl jq python go nodejs
 
 # MacOS
 
+## Run Powershell x64
+
+```bash
+arch -x86_64 pwsh
+# Using this most of the azure commands do work
+```
+
 # Kali
 
 # Cloud
 
 # Hardware and ergonomics
+
+# Powershell
+
+Clear the history in powershell every once in a while
+
+```powershell
+Clear-History
+```
+
+List installed modules and uninstall
+
+```powershell
+Get-InstalledModule | grep AzureAD
+```
