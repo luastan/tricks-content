@@ -2,6 +2,7 @@
 title: Enumeration
 description: Found or got access to any Azure account? Let's see what's next.
 badge: Azure
+position: 11
 ---
 
 Here are some of the ways you can enumerate Azure cloud environments once you get access to a valid account.
