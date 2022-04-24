@@ -18,40 +18,110 @@ $creds = New-Object System.Management.Automation.PSCredential ('{{ Username user
 Connect-AzureAD -Credential $creds
 ```
 
+Current session info:
+
+```powershell
+Get-AzureADCurrentSessionInfo
+```
+
 Get all users in the AAD
 
 ```powershell
 Get-AzureADUser -All $true
+# Search string in DisplayName and userPrincipalName, no wildcards allowed
+Get-AzureADUser -SearchString "{{ Filter string }}"
+# Search using powershell
+Get-AzureADUser -All $true | ?{$_.Displayname -match "{{ Filter string }}"}
+# List attributes of user
+Get-AzureADUser -ObjectId '{{ Username user@domain.com }}' | fl *
+
+# Search all attributes that match password
+Get-AzureADUser -All $true | %{$Properties = $_; $Properties.PSObject.Properties.Name | %{if ($Properties.$_ -match 'password') {"$($Properties.UserPrincipalName) - $_ - $($Properties.$_)"}}}
+
+# Users synced from on-prem
+Get-AzureADUser -All $true | ?{$_.OnPremisesSecurityIdentifier -ne $null}
+# Users synced from Azure
+Get-AzureADUser -All $true | ?{$_.OnPremisesSecurityIdentifier -eq $null}
+```
+
+Objects created from a specific user
+
+```powershell
+Get-AzureADUserOwnedObject -ObjectId '{{ Username user@domain.com }}'
 ```
 
 Get all groups in the AD
 
 ```powershell
 Get-AzureADGroup -All $true
+# Filter DisplayName, no wildcards allowed
+Get-AzureADGroup -SearchString '{{ Filter string }}' | fl *
+
+# Groups that allow dynamic membership
+Get-AzureADMSGroup | ?{$_.GroupTypes -eq 'DynamicMembership'}
+
+# Groups synced from onprem
+Get-AzureADGroup -All $true | ?{$_.OnPremisesSecurityIdentifier -ne $null}
+```
+
+Get members of a group
+
+```powershell
+Get-AzureADGroupMember -ObjectId {{ Object object}}
 ```
 
 Get all AD joined devices
 
 ```powershell
-Get-AzureADDevice
+Get-AzureADDevice -All $true | fl *
+Get-AzureADDeviceConfiguration | fl *
+# Devices owned by user
+Get-AzureADUserOwnedDevice -ObjectId {{ Username user@domain.com }}
 ```
 
-Get Global administrators
+Get users with role:
 
 ```powershell
-Get-AzureADDirectoryRole -Filter "DisplayName eq 'Global Administrator'" | Get-AzureADDirectoryRoleMember
+Get-AzureADDirectoryRole -Filter "DisplayName eq '{{ Role role }}'" | Get-AzureADDirectoryRoleMember
 ```
 
-Get Application Administrators
-
-```powershell
-Get-AzureADDirectoryRole -Filter "DisplayName eq 'Application Administrator'" | Get-AzureADDirectoryRoleMember
-```
+Interesting roles:
+* Global Administrator
+* Application Administrator
 
 Get custom roles (This requires AzureADPreview Module)
 
 ```powershell
 Get-AzureADMSRoleDefinition | ?{$_.IsBuiltin -eq $False} | select DisplayName
+```
+
+Get application objects
+
+```powershell
+Get-AzureADApplication -All $true
+Get-AzureADApplication -ObjectId {{ ApplicationId appid }}
+Get-AzureADApplication -All $true | ?{$_.DisplayName -match "{{ Displayname displayname }}"}
+
+# Applications with an application password but password value not shown
+Get-AzureADApplicationPasswordCredential
+
+# Get owner of application
+Get-AzureADApplication -ObjectId {{ ApplicationId appid}} | Get-AzureADApplicationOwner |fl *
+```
+
+Get service principals (Enterprise applications)
+
+```powershell
+Get-AzureADServicePrincipal -All $true
+Get-AzureADServicePrincipal -ObjectId {{ ApplicationId appid }}
+Get-AzureADServicePrincipal -All $true | ?{$_.DisplayName -match "{{ Displayname displayname }}"}
+
+# Get owner of application
+Get-AzureADServicePrincipal -ObjectId {{ ApplicationId appid }} | Get-AzureADApplicationOwner |fl *
+# Get objects owned by a service principal
+Get-AzureADServicePrincipal -ObjectId {{ ApplicationId appid }}  | Get-AzureADServicePrincipalOwnedObject
+# Get group and role membership of a service principal
+Get-AzureADServicePrincipal -ObjectId {{ ApplicationId appid }} | Get- AzureADServicePrincipalMembership |fl *
 ```
 
 ## Az Powershell module
@@ -68,6 +138,15 @@ Login:
 $passwd = ConvertTo-SecureString '{{ Password password }}' -AsPlainText -Force
 $creds = New-Object System.Management.Automation.PSCredential ('{{ Username user@domain.com }}', $passwd)
 Connect-AzAccount -Credential $creds
+```
+
+Get data of the context
+
+```powershell
+Get-AzContext
+Get-AzContext -ListAvailable
+Get-AzSubscription
+Get-AzRoleAssignment
 ```
 
 Get accesible resources
@@ -122,6 +201,31 @@ Login:
 
 ```powershell
 az login -u '{{ Username user@domain.com }}' -p '{{ Password password }}'
+az login -u '{{ Username user@domain.com }}' -p '{{ Password password }}' --allow-no-subscriptions
+```
+
+Find information about the current user
+
+```powershell
+az account tenant list
+az account subscription list
+az ad signed-in-user show
+```
+
+List AAD users
+
+```powershell
+az ad user list
+```
+
+List AAD Apps
+
+```powershell
+az ad app list
+# Show information about the application
+az ad app show --id {{ ApplicationId appid }}
+# List owners of application
+az ad app owner list --id {{ ApplicationId appid }} --query "[].[displayName]"
 ```
 
 List vms
