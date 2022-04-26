@@ -266,6 +266,12 @@ az ad sp list --all --query "[?passwordCredentials != null].displayName"
 # Service principals that have key credentials
 ```
 
+List owned objects
+
+```powershell
+az ad signed-in-user list-owned-objects
+```
+
 List vms
 
 ```powershell
