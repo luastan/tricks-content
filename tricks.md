@@ -20,9 +20,9 @@ docker pull "{{ image gcr.io/luastans-trickz/ssr-tricks }}"
 If you can acces the source code, you can also build the image from source:
 
 ```bash
-git clone "https://github.com/luastan/tricks.git" tricks
-docker build -t "{{ image tricks }}" tricks
+docker build -t "{{ image tricks }}" "https://github.com/luastan/tricks.git#master"
 ```
+
 
 Then you can mount any folder with markdown on it. The following command uses the `mounting-point` directory as a markdown source and also forwards the port `lport` on your host to the container:
 
