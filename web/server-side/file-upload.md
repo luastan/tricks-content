@@ -47,7 +47,6 @@ If you can upload any file on a server using PHP try to upload a PHP shell with 
 .php6
 .php7
 .phps
-.phps
 .pht
 .phtm
 .phtml
