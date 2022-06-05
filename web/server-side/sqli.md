@@ -446,7 +446,7 @@ But the idea is to get one of this _sleep_ functions to execute:
 | PostgreSQL | `pg_sleep(10)` |
 | MySQL | `sleep(10)` |
 
-I personally like to abuse it 
+These are some examples on how you would abuse this condition to retrieve data: 
 
 | Database type | Query |
 | --- | --- |
