@@ -52,7 +52,7 @@ Now you can explore the files at <code><smart-variable variable="app-package">co
 Nuclei can parse application files to find secrets and even misconfigurations. The default templates for this task belong to the `file` templates:
 
 ```bash
-nuclei -t file -u "{{ app-package com.luastan.app }}"
+nuclei -t file -u "{{ app-package com.luastan.app }}" -me "{{ app-package nuclei_results_com.luastan.app }}"
 ```
 > To be continued ...
 
