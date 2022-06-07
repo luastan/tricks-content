@@ -16,3 +16,9 @@ position: 2
 #### Using unc0ver
 
 First download the ipa file from [unc0ver's website](https://unc0ver.dev/)
+
+
+## Resources
+
+- [How to Reverse Engineer and Patch an iOS Application for Beginners: Part I](https://www.inversecos.com/2022/06/how-to-reverse-engineer-and-patch-ios.html)
+- [iOS Jailbreaking](https://redfoxsec.com/blog/ios-jailbreaking/)

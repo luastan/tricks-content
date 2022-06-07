@@ -32,3 +32,8 @@ As explained in this bug bounty report. DNS Rebinding can be used to abuse a rac
 ## Additional Tips & Trickz
 
 ### Blind SSRF vulnerabilities
+
+
+## Resources
+
+- [RedFox - Server-Side Request Forgery (SSRF)](https://redfoxsec.com/blog/ssrf/)
