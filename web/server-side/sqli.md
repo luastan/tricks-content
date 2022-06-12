@@ -141,6 +141,8 @@ UNION SELECT NULL,NULL,NULL,NULL--
 
 > Test both methods and look for either verbose errors or behaviour changes
 
+> On **Oracle** databases, every select statement must specify a table when using `SELECT`. This means you would have to use payloads like `UNION SELECT NULL FROM dual--` (`FROM dual`).
+
 ### Finding columns with a useful data type
 
 Whith the number of columns, just fill them with `NULL` and test every colum type manually. For example:
