@@ -2,6 +2,7 @@
 title: Tast Hijacking
 badge: Android
 description: Task Hijacking is a vulnerability that affects the applications running on Android devices due to a misconfiguration in their AndroidManifest.xml with their Task Control features
+position: 4
 ---
 
 
