@@ -124,6 +124,12 @@ Get-AzureADServicePrincipal -ObjectId {{ ApplicationId appid }}  | Get-AzureADSe
 Get-AzureADServicePrincipal -ObjectId {{ ApplicationId appid }} | Get- AzureADServicePrincipalMembership |fl *
 ```
 
+Check if a compromised host has an ADSyncConnector:
+
+```powershell
+Get-ADSyncConnector
+```
+
 ## Az Powershell module
 
 The Az PowerShell module is a set of cmdlets for managing Azure resources directly from PowerShell. PowerShell provides powerful features for automation that can be leveraged for managing your Azure resources, for example in the context of a CI/CD pipeline.
@@ -159,6 +165,13 @@ Get all the role assignments for an user
 
 ```powershell
 Get-AzRoleAssignment -SignInName {{ Username user@domain.com }}
+
+# Get role assignment for the current user to a specific resource
+Get-AzRoleAssignment -Scope {{ ResourceID /subscriptions/e149bb0a-224a-4802-8ef3-7477110706ad/resourceGroups/cloud-shell-storage-centralindia/providers/Microsoft.Automation/automationAccounts/SecureAutomation/runbooks/CreateResourceGroup }}
+
+# Do it for all resources
+Get-AzResource | %{try{Get-AzRoleAssignment -Scope $_.ResourceId}catch{}}
+
 ```
 
 Get Azure VMs
@@ -183,6 +196,22 @@ List storage accounts
 
 ```powershell
 Get-AzStorageAccount | fl
+```
+
+List automation accounts
+
+```powershell
+Get-AzAutomationAccount
+
+# List runbooks
+Get-AzAutomationRunbook -AutomationAccountName "{{ AutomationAccountName SecureAutomation }}" -ResourceGroupName "{{ ResourceGroupName cloud-shell-storage-centralindia }}"
+Get-AzAutomationRunbook -AutomationAccountName "{{ AutomationAccountName SecureAutomation }}" -ResourceGroupName "{{ ResourceGroupName cloud-shell-storage-centralindia }}" -Name {{ FunctionName CreateFunctionApp }}
+
+# Export runbook
+Export-AzAutomationRunbook -AutomationAccountName "{{ AutomationAccountName SecureAutomation }}" -ResourceGroupName "{{ ResourceGroupName cloud-shell-storage-centralindia }}" -Name {{ FunctionName CreateFunctionApp }} -Slot "Published" -OutputFolder ".\runbooks"
+
+# Dump all runbooks
+Get-AzAutomationRunbook -AutomationAccountName "{{ AutomationAccountName SecureAutomation }}" -ResourceGroupName "{{ ResourceGroupName cloud-shell-storage-centralindia }}" | %{Export-AzAutomationRunbook -AutomationAccountName $_.AutomationAccountName -ResourceGroupName $_.ResourceGroupName -Name $_.Name -Slot "Published" -OutputFolder ".\runbooks"}
 ```
 
 List KeyVaults
@@ -254,6 +283,9 @@ List Service Principals
 
 ```powershell
 az ad sp list
+
+az ad sp list --all
+
 # Show information about the application
 az ad sp show --id {{ ApplicationId appid }}
 # List owners of application
@@ -264,6 +296,17 @@ az ad sp list --show-mine
 # Service principals that have password credentials
 az ad sp list --all --query "[?passwordCredentials != null].displayName"
 # Service principals that have key credentials
+```
+
+Export configuration for Service Principals
+
+```powershell
+
+# List keys
+az appconfig kv list --connection-string "Endpoint={{ ConnectionString https://escrow3.azconfig.io;Id=q63q-lab-s0:IkiICUfj7aoiWdfW+fLf;Secret=j50xk3bTCW3uZ4R+jMAyu/feCaKRXrAucE5dJs5OHmY= }}"
+
+# Export key-value
+az appconfig kv export --connection-string "Endpoint={{ ConnectionString https://escrow3.azconfig.io;Id=q63q-lab-s0:IkiICUfj7aoiWdfW+fLf;Secret=j50xk3bTCW3uZ4R+jMAyu/feCaKRXrAucE5dJs5OHmY= }}" --key "{{ Key Escrow3App:Settings:Passwd }}" -d file --path appconfig.json --format json
 ```
 
 List owned objects
@@ -300,6 +343,14 @@ List KeyVaults
 
 ```powershell
 az keyvault list
+```
+
+List Resources
+
+```powershell
+# First list locations if you do not know where the resources are
+# az account list-locations
+az resource list --location westus
 ```
 
 ## Using APIs
@@ -347,26 +398,12 @@ az account get-access-token --resource-type {{ Resource-type ms-graph }}
 az account get-access-token --resource {{ Resource_URI https://graph.microsoft.com }}
 ```
 
-### ARM (Azure Resource Manager)
+### ARM (Azure Resource Manager) (management.azure.com)
 
 ```powershell
 # List subscriptions
 $Token = '{{ Access_token eyJ0eXA...}}'
 $URI = 'https://management.azure.com/subscriptions?api-version=2020-01-01'
-$RequestParams = @{
-    Method  = 'GET'
-    Uri = $URI Headers = @{
-    'Authorization' = "Bearer $Token"
-    }
-}
-(Invoke-RestMethod @RequestParams).value
-```
-
-### MS-Graph
-
-```powershell
-$Token = '{{ Access_token eyJ0eXA...}}'
-$URI = 'https://graph.microsoft.com/v1.0/users'
 $RequestParams = @{
     Method  = 'GET'
     Uri = $URI Headers = @{
@@ -398,7 +435,24 @@ $RequestParams = @{
     }
 }
 (Invoke-RestMethod @RequestParams).value
+```
 
+### MS-Graph (graph.microsoft.com)
+
+```powershell
+# List users
+$Token = '{{ Access_token eyJ0eXA...}}'
+$URI = 'https://graph.microsoft.com/v1.0/users'
+$RequestParams = @{
+    Method  = 'GET'
+    Uri = $URI Headers = @{
+    'Authorization' = "Bearer $Token"
+    }
+}
+(Invoke-RestMethod @RequestParams).value
+```
+
+```powershell
 # List enterprise applications
 $Token = '{{ Access_token eyJ0eXA...}}'
 $URI = 'https://graph.microsoft.com/v1.0/servicePrincipals'
@@ -410,7 +464,20 @@ $RequestParams = @{
     }
 }
 (Invoke-RestMethod @RequestParams).value
+```
 
+```powershell
+# List applications
+$token = (Get-AzAccessToken -ResourceUrl 'https://graph.microsoft.com').Token
+$URI = 'https://graph.microsoft.com/v1.0/applications'
+$RequestParams = @{
+    Method  = 'GET'
+    Uri     = $URI
+    Headers = @{
+        'Authorization' = "Bearer $token"
+    }
+}
+(Invoke-RestMethod @RequestParams).value
 ```
 
 ## Dump everything using [RoadRecon](https://github.com/dirkjanm/ROADtools)
