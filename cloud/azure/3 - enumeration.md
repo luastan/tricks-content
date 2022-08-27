@@ -223,7 +223,7 @@ Get-AzKeyVault
 Get-AzKeyVaultSecret -VaultName {{ VaultName vaultname }}
 
 # Access keyvault
-Get-AzKeyVaultSecret -VaultName {{ VaultName vaultname }} -Name {{ SecretName secretname }}-AsPlainText
+Get-AzKeyVaultSecret -VaultName {{ VaultName vaultname }} -Name {{ SecretName secretname }} -AsPlainText
 ```
 
 ## AZ Cli
@@ -406,7 +406,8 @@ $Token = '{{ Access_token eyJ0eXA...}}'
 $URI = 'https://management.azure.com/subscriptions?api-version=2020-01-01'
 $RequestParams = @{
     Method  = 'GET'
-    Uri = $URI Headers = @{
+    Uri = $URI
+    Headers = @{
     'Authorization' = "Bearer $Token"
     }
 }

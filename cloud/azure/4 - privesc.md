@@ -178,6 +178,9 @@ Let's switch to Az powershell module
 # Get token for ARM
 az account get-access-token
 $AccessToken = 'eyJ0...'
+az account get-access-token --resource-type ms-graph
+$AADToken = 'eyJ0...'
+
 
 Connect-AzAccount -AccessToken $AccessToken -GraphAccessToken $AADToken -AccountId f66e133c-bd01-4b0b-b3b7-7cd949fd45f3
 ```
