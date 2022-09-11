@@ -92,6 +92,10 @@ if http.StatusLocked == makeSomeRequest() {
 rl.Unlock()
 ```
 
+## Context
+
+[Go's blog on Context](https://go.dev/blog/context)
+
 ## The pipeline
 
 This is sort of a functional way of thinking about the instruction flow of the program. As an example think about Gobuster, you have a bunch of paths on a file, you have to make a request for each path and then print the URL if the path was found:

