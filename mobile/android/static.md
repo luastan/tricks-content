@@ -2,11 +2,10 @@
 title: Static Analysis
 badge: Android
 description: Basic static analysis for android applications
-position: 2
+position: 3
 ---
 
 Let's say you want to analyse the <smart-variable variable="app-package">com.luastan.app</smart-variable> application. The following is a guide in order to provide some guildeness onto how to get started with Android applications static analysis. The required environment is described at the [Android page](/mobile/android#required-tools).
-
 
 ## Getting the APK
 
@@ -54,12 +53,22 @@ Nuclei can parse application files to find secrets and even misconfigurations. T
 ```bash
 nuclei -t file -u "{{ app-package com.luastan.app }}" -me "{{ app-package nuclei_results_com.luastan.app }}"
 ```
+
 > To be continued ...
 
-## Keytest
+## Finding secrets
+
+It's allways important to grep the app contents in order to find hidden secrets. Good regexes to try are:
+
+- [Google Cloud regexes](/cloud/google/key-leaks#useful-regexes)
+- [Tomnomnom's gf](https://github.com/tomnomnom/gf/tree/master/examples)
+
+### Keytest
+
 With [Keytest](https://github.com/luastan/keytest) you can find and check API keys that might be included with the APP sources:
 
 You can find the API keys with:
+
 ```bash
 keytest find "{{ app-package com.luastan.app }}"
 ```
@@ -73,3 +82,6 @@ keytest check "{{ app-package com.luastan.app }}" -o "{{ app-package com.luastan
 ## Decompiling into Java source
 
 ## Mobile Security Framework (MobSF)
+
+It's not going to save your life, but it gives a nice brief overview of the app while starting a pentest.
+I cover it [here](/mobile/general/mobsf).

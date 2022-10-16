@@ -1,7 +1,7 @@
 ---
 title: Methodology
 badge: Android
-position: 1
+position: 2
 ---
 
 ## Getting Started
