@@ -2,6 +2,7 @@
 title: Common Azure leaks
 description: Due to the dynamic nature of cloud environments, secrets and other kinds of sensible information might get stored in different kinds of metadata.
 badge: Azure
+position: 11
 ---
 
 
