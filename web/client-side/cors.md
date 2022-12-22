@@ -70,6 +70,8 @@ Given these constraints, some web servers dynamically create Access-Control-Allo
 
 ### Impact
 
+A missconfigured CORS policy may allow external actors to view and edit confidential data managed by the vulnerable application from external and untrusted domains.
+
 ### Basic Howto
 
 Let's asume that a vulnerable server receives this request:
@@ -170,6 +172,10 @@ function fetchUrl(url, wait) {
 ```
 
 ### Delivering the exploit
+
+CORS issues are usually exploited via a malicious web page that sends requests to the vulnerable legitimate web application.
+
+Said that, it is possible to exploit CORS issues by exploiting vulnerable but whitelisted subdomains or adquiring similar and whitelisted domains that are not registered
 
 ## Checklist
 
