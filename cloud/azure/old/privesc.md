@@ -2,7 +2,7 @@
 title: Azure AD privilege escalation
 description: Some of the ways you can escalate your privileges on Azure AD (AAD)
 badge: Azure
-position: 2
+position: 10
 ---
 
 ## Good resources
