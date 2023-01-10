@@ -23,6 +23,12 @@ Useful when the payload is reflected on multiple fields. Mainly to avoid popping
 if (window.{{ js-exec-flag _trickz }} === undefined){{{ js-exec-once alert(1) }};window.{{ js-exec-flag _trickz }} = 1}
 ```
 
+Same trick but also trying to indicate where the payload came from.
+
+```js
+if (window['_{{ input-ref username }}'] === undefined){alert('{{ input-ref username }}');window['_{{ input-ref username }}'] = 1}
+```
+
 #### Load Script file
 
 ```js
