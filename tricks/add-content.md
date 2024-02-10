@@ -78,61 +78,6 @@ Headers are automatically assigned an id consisting of the title in lowercase re
 
 Any editor with markdown completion will suggest and autocomplete the link for you.
 
-## Vue components
-
-Things start getting interesting. Tricks can use predefined Vue components, which adds huge versatility in the long-run as more components are added.
-
-### Smart Tabs
-
-Very simple component
-
-```markdown
-<smart-tabs variable="{{ variable-name tool-docker-vs-cli }}" :tabs="{'{{ tab-a-id docker }}': '{{ tab-a-title Docker }}', '{{ tab-b-id cli }}': '{{ tab-b-title Command line }}'}">
-<template v-slot:{{ tab-a-id docker }}>
-
-- Markdown content for tab A
-
-</template>
-<template v-slot:{{ tab-b-id cli }}>
-
-- Markdown content for tab B
-
-</template>
-</smart-tabs>
-```
-
-Which would look somewhat like this:
-
-<smart-tabs variable="tool-docker-vs-cli" :tabs="{'docker': 'Docker', 'cli': 'Command line'}">
-<template v-slot:docker>
-
-- Markdown content for tab A
-
-</template>
-<template v-slot:cli>
-
-- Markdown content for tab B
-
-</template>
-</smart-tabs>
-
-Remember to leave a blank line between HTML code and markdown code when writing between HTML tags or the parser will identify everything as HTML and skip your markdown.
-
-### Smart variables
-
-This component displays the value for a _variable_ that is shared with every page and component and saved on your browser local storage. The code for displaying <smart-variable variable="var" default-value="this"></smart-variable> would be:
-
-```markdown
-<smart-variable variable="{{ variable-name var }}" default-value="{{ variable-value this }}"></smart-variable>
-```
-
-As a trick you can allow click to copy wrapping the component like <code><smart-variable variable="var" default-value="this"></smart-variable></code> with the `<code></code>` tag as follows:
-
-```markdown
-<code><smart-variable variable="{{ variable-name var }}" default-value="{{ variable-value this }}"></smart-variable></code>
-```
-
-The main purpose for this component is to be used on code snippets, where a much more simplified template syntax can also be used in flavour of the verbose tag form of the component. More on that [below](/tricks/add-content#smart-variables-1)  
 
 ## Code snippets
 
@@ -192,3 +137,59 @@ For the moment, the following filters are available:
 - `lower`: Transforms into lowercase.
 - `upper`: Transforms into uppercase.
 - `html`: Encodes value into HTML entities.
+
+## Vue components
+
+Things start getting interesting. Tricks can use predefined Vue components, which adds huge versatility in the long-run as more components are added.
+
+### Smart Tabs
+
+Very simple component
+
+```markdown
+<smart-tabs variable="{{ variable-name tool-docker-vs-cli }}" :tabs="{'{{ tab-a-id docker }}': '{{ tab-a-title Docker }}', '{{ tab-b-id cli }}': '{{ tab-b-title Command line }}'}">
+<template v-slot:{{ tab-a-id docker }}>
+
+- Markdown content for tab A
+
+</template>
+<template v-slot:{{ tab-b-id cli }}>
+
+- Markdown content for tab B
+
+</template>
+</smart-tabs>
+```
+
+Which would look somewhat like this:
+
+<smart-tabs variable="tool-docker-vs-cli" :tabs="{'docker': 'Docker', 'cli': 'Command line'}">
+<template v-slot:docker>
+
+- Markdown content for tab A
+
+</template>
+<template v-slot:cli>
+
+- Markdown content for tab B
+
+</template>
+</smart-tabs>
+
+Remember to leave a blank line between HTML code and markdown code when writing between HTML tags or the parser will identify everything as HTML and skip your markdown.
+
+### Smart variables
+
+This component displays the value for a _variable_ that is shared with every page and component and saved on your browser local storage. The code for displaying <smart-variable variable="var" default-value="this"></smart-variable> would be:
+
+```markdown
+<smart-variable variable="{{ variable-name var }}" default-value="{{ variable-value this }}"></smart-variable>
+```
+
+As a trick you can allow click to copy wrapping the component like <code><smart-variable variable="var" default-value="this"></smart-variable></code> with the `<code></code>` tag as follows:
+
+```markdown
+<code><smart-variable variable="{{ variable-name var }}" default-value="{{ variable-value this }}"></smart-variable></code>
+```
+
+The main purpose for this component is to be used on code snippets, where a much more simplified template syntax can also be used in flavour of the verbose tag form of the component. More on that [below](/tricks/add-content#smart-variables-1)  

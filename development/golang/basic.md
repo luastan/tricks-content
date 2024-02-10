@@ -5,11 +5,57 @@ badge: Go
 position: 1
 ---
 
+
+## Basic cli tool
+
+Project initialization for the <smart-variable variable="toolname" default-value="example"></smart-variable> command-line tool.
+
+``` shell
+cd "$(go env GOPATH)/src"
+mkdir -p {{ repo github.com/luastan }}/{{ toolname example }}
+cd {{ repo github.com/luastan }}/{{ toolname example }}
+go mod init {{ repo github.com/luastan }}/{{ toolname example }}
+```
+
+### Command line options with cobra CLI
+
+I usually implement command line options using [cobra CLI](https://cobra.dev/) with the [Cobra Generator](https://github.com/spf13/cobra-cli/blob/main/README.md) for basic boilerplate:
+
+<smart-tabs variable="cobra-basic-vs-options" :tabs="{'basic': 'Basic', 'options': 'With options'}">
+<template v-slot:basic>
+
+``` shell
+cd $(go env GOPATH)/src/{{ repo github.com/luastan }}/{{ toolname example }}
+cobra-cli init
+go run main.go
+```
+
+</template>
+<template v-slot:options>
+
+``` shell
+cd $(go env GOPATH)/src/{{ repo github.com/luastan }}/{{ toolname example }}
+cobra-cli init --author "{{ author you you@example.com }}" --license {{ license apache }}
+go run main.go
+```
+
+</template>
+</smart-tabs>
+
+
+
+``` shell
+cobra-cli add {{ command-name config }}
+```
+
+
+
+
 ## Boilerplate code
 
 Sample Go code to make a request through a Socks5 or http proxy
 
-```go
+``` go
 package main
 
 import (
