@@ -119,3 +119,7 @@ func main() {
 	fmt.Println(string(bodyBytes))	
 }
 ```
+
+## More complex layout
+
+When building bigger applications, the following repo shows an example of how to layout go projects: [golang-standards/project-layout](https://github.com/golang-standards/project-layout).
