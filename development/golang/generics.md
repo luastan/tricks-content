@@ -1,6 +1,8 @@
 ---
 title: Generics
 description: Using generic types in Go
+badge: Go
+position: 4
 ---
 
 Amazing feature released with Go 1.18 that can be very usefull when working with either of the following:

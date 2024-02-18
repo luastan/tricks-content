@@ -42,14 +42,9 @@ go run main.go
 </template>
 </smart-tabs>
 
-
-
 ``` shell
 cobra-cli add {{ command-name config }}
 ```
-
-
-
 
 ## Boilerplate code
 
