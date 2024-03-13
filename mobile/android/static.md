@@ -12,7 +12,7 @@ Let's say you want to analyse the <smart-variable variable="app-package">com.lua
 The first step is to locate the application file. We find it executing a shell command on the phone (If you don't know exactly the package name try the command with a string the app might have):
 
 ```bash
-adb shell "pm list packages -f | grep {{ app-package com.luastan.app }} | sed 's/.*:\(.*apk\)=.*/\1/'"
+adb shell "pm list packages -f | grep -i {{ app-package com.luastan.app }} | sed 's/.*:\(.*apk\)=.*/\1/'"
 ```
 
 Once you located the apk you can pull it (transfer it from your phone to your computer) with `adb pull`. You can use the _no-need-to-paste_ one-liner or specify the location:
@@ -21,7 +21,7 @@ Once you located the apk you can pull it (transfer it from your phone to your co
 <template v-slot:fancy>
 
 ```bash
-adb pull $(adb shell "pm list packages -f | grep {{ app-package com.luastan.app }} | sed 's/.*:\(.*apk\)=.*/\1/'" | tr -d '\r\n') "{{ app-package com.luastan.app }}.apk"
+adb pull $(adb shell "pm list packages -f | grep -i {{ app-package com.luastan.app }} | sed 's/.*:\(.*apk\)=.*/\1/'" | tr -d '\r\n') "{{ app-package com.luastan.app }}.apk"
 ```
 
 </template>
@@ -50,9 +50,22 @@ Now you can explore the files at <code><smart-variable variable="app-package">co
 
 Nuclei can parse application files to find secrets and even misconfigurations. The default templates for this task belong to the `file` templates:
 
+<smart-tabs variable="nuclei-results" :tabs="{'simple': 'Simple', 'automatic': 'Automatic'}">
+<template v-slot:simple>
+
 ```bash
-nuclei -t file -u "{{ app-package com.luastan.app }}" -me "{{ app-package nuclei_results_com.luastan.app }}"
+nuclei -t file -u "{{ app-package com.luastan.app }}" -me "{{ nuclei-output nuclei_results_static }}"
 ```
+
+</template>
+<template v-slot:automatic>
+
+```bash
+nuclei -t file -u "{{ app-package com.luastan.app }}" -me "{{ nuclei-output scans }}/android_{{ app-package com.luastan.app }}"
+```
+
+</template>
+</smart-tabs>
 
 > To be continued ...
 
@@ -75,9 +88,22 @@ keytest find "{{ app-package com.luastan.app }}"
 
 Or even directly test the API keys to check if any is vulnerable to some kind of misconfiguration:
 
+<smart-tabs variable="output-to-markdown" :tabs="{'markdown': 'Markdown', 'stdout': 'Stdout'}">
+<template v-slot:markdown>
+
 ```bash
 keytest check "{{ app-package com.luastan.app }}" -o "{{ app-package com.luastan.app }}.apikeys.md"
 ```
+
+</template>
+<template v-slot:stdout>
+
+```bash
+keytest check "{{ app-package com.luastan.app }}"
+```
+
+</template>
+</smart-tabs>
 
 ## Decompiling into Java source
 
