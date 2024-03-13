@@ -5,6 +5,109 @@ description: Some tricks for Android dynamic analysis
 position: 4
 ---
 
+
+## Dynamic Instrumentation Basics
+
+### Frida
+
+<smart-tabs variable="frida" :tabs="{'no-script': 'Without script', 'with-script': 'With Script'}">
+<template v-slot:no-script>
+
+```shell
+frida -U -f "{{ app-package com.luastan.app }}"
+```
+
+</template>
+<template v-slot:with-script>
+
+```shell
+frida -U -f "{{ app-package com.luastan.app }}" -l "{{ frida-script anti-root.js }}"
+```
+
+</template>
+</smart-tabs>
+
+#### Locate a running app
+
+Look for a running app. I make use of the following command more often than expected:
+
+<smart-tabs variable="awk" :tabs="{'awk': 'awk', 'alternatives': 'Alternatives'}">
+<template v-slot:awk>
+
+```shell
+frida-ps -U | grep -i "{{ app-name MyApp }}" | awk '{print $1}'
+```
+
+</template>
+<template v-slot:alternatives>
+
+If you don't have `awk` you can use one of the following `xargs`+`cut` combinations:
+
+```shell
+frida-ps -U | grep -i "{{ app-name MyApp }}" | xargs | cut -d ' ' -f1
+frida-ps -U | grep -i "{{ app-name MyApp }}" | xargs echo | cut -d ' ' -f1
+frida-ps -U | grep -i "{{ app-name MyApp }}" | {{ trim-whitespaces-command xargs echo }} | cut -d ' ' -f1
+frida-ps -U | grep -i "{{ app-name MyApp }}" | cut -d ' ' -f{{ cut-field 1 }}
+```
+
+</template>
+</smart-tabs>
+
+### Objection
+
+<smart-tabs variable="objection-mode" :tabs="{'launch': 'Launch app', 'attatch': 'Attatch to app'}">
+<template v-slot:launch>
+
+```shell
+objection -g "{{ app-package com.luastan.app }}" explore
+```
+
+</template>
+<template v-slot:attatch>
+
+- Without knowing the PID:
+
+```shell
+objection -g $(frida-ps -U | grep -i "{{ app-name MyApp }}" | awk '{print $1}') explore
+```
+
+- Knowing the PID:
+
+```shell
+objection -g {{ PID 123 }} explore
+```
+
+</template>
+</smart-tabs>
+
+#### Hooking helpers
+
+While JadX provides nice help to hook with Frida, you might find the following quite usefull to look for **loaded** classes.
+
+- Search classess:
+
+```shell
+android hooking search classes {{ class-search com.root.detection }}
+```
+
+- List **loaded** classess:
+
+```shell
+android hooking list classes
+```
+
+- Search methods:
+
+```shell
+android hooking search methods {{ package-name com.luastan.app }} {{ classname RootDetection }}
+```
+
+- List methods with parameters:
+
+```shell
+android hooking list class_methods {{ class com.root.detection }}
+```
+
 ## Certificate Pinning
 
 Intercepting traffic from the application is one of the first things you want to do. Start by setting your burp as a proxy for the phone.
