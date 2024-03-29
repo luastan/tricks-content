@@ -63,14 +63,14 @@ Less of a pain to use than `window.name`, can be used in environments with a not
 
 ## Abusing JSONP
 
-When no `unsafe-inline` is allowed, and only scripts served from a specific origin can be loaded, there's still the possiblity of abusing JSONP endpoints if present.
+When no `unsafe-inline` is allowed, and only scripts served from a specific source can be loaded, there's still the possiblity of abusing JSONP endpoints if present.
 Your XSS should look similar to the following:
 
 ``` html
 <script src="{{ jsonp-endpoint /l/es.json?callback= }}{{ xss-payload alert(document.domain)} url }%2F%2F">
 ```
 
-The JSONP endpoint can be located at any origin allowed by the CSP.
+The JSONP endpoint can be located at any source allowed by the CSP.
 There's a lot of publicly available endpoints from many interesting domains; for exaple, if `*.google.com` or `accounts.google.com` is allowed you could use the following:
 
 ``` html
@@ -82,6 +82,12 @@ There's plenty of such resources, you can find more on the following repo:
 * [github.com/zigoo0/JSONBee](https://github.com/zigoo0/JSONBee)
 
 Default JSONP endpoints provided by frameworks or stacked technologies, such as Wordpress, are usually protected against this, having many characters blocked by default. This means that if you are attacking a Wordpress site, it will most likely have an exposed JSONP endpoint, but it will be very difficult to abuse for this purpose. However, this is definetely doable with complex payloads using stuff like Same Origin Method Execution[^1][^2][^3]
+
+## Bypass path restrictions with redirections
+
+CSP allows you to also specify paths in order to restrict the sources where content can be loaded.
+The paths are completely ignored after redirects, but any domain the browser requests must be allowed by the CSP.
+If you have an open-redirect gadget, it might be useful for this.
 
 [^1]: **Bypass CSP Using WordPress By Abusing Same Origin Method Execution** - [octagon.net/blog/2022/05/29/bypass-csp-using-wordpress-by-abusing-same-origin-method-execution](https://octagon.net/blog/2022/05/29/bypass-csp-using-wordpress-by-abusing-same-origin-method-execution/)
 [^2]: **SOME Attack** - [www.someattack.com/Playground/About](https://www.someattack.com/Playground/About)
