@@ -1,5 +1,5 @@
 ---
-title: "Window: postMessage() method"
+title: "PostMessage attacks"
 description: Enables cross-origin communication between Window objects; e.g., between a page and a pop-up that it spawned, or between a page and an iframe embedded within it.
 badge: Web
 ---
