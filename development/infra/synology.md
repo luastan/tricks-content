@@ -1,7 +1,7 @@
 ---
 title: Synology
 badge: infra
-description: NAS configuration and tricks
+description: Synology NAS configurations and tricks
 ---
 
 ## Local Let's Encrypt + ACME certificates
